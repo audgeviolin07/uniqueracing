@@ -6,6 +6,7 @@ import { CreateLocalAccountModal } from "../modals/CreateLocalAccountModal";
 import { SignMessageModal } from "../modals/SignMessageModal";
 import { TransferAmountModal } from "../modals/TransferAmountModal";
 import { Logo } from "./logo";
+import { Link } from "react-router-dom";
 
 export const AccountsPage = () => {
   const { accounts, fetchMetamaskAccounts, fetchPolkadotAccounts } = useContext(AccountsContext);
@@ -63,6 +64,11 @@ export const AccountsPage = () => {
       })}
     </List>
     <Logo />
+    <div className="play-button">
+      <Link to="/game">
+        <button>Let's Play</button>
+      </Link>
+    </div>
     <TransferAmountModal 
       isVisible={transferAmountIsVisible} 
       sender={currentAccount}

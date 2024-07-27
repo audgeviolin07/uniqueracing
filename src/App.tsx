@@ -3,18 +3,24 @@ import './App.css';
 import { AccountsPage } from './pages/Accounts';
 import { SdkProvider } from './sdk/SdkContext';
 import { SignByLocalSignerModalProvider } from './signModal/SignByLocalSignerModalContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
       <SdkProvider>
         <SignByLocalSignerModalProvider>
           <AccountsContextProvider>
-            <AccountsPage />
+            <Routes>
+              <Route path='/' element={<AccountsPage />} />
+              <Route path='/game' element={<AccountsPage />} />
+            </Routes>
           </AccountsContextProvider>
         </SignByLocalSignerModalProvider>
       </SdkProvider>
     </div>
+    </Router>
   );
 }
 
