@@ -1,0 +1,42 @@
+.road {
+  position: relative;
+  width: 150px; /* Adjust the width as needed */
+  height: 100vh;
+  background-color: #333;
+  overflow: hidden;
+}
+
+.stripe {
+  position: absolute;
+  width: 20px;
+  height: 50px;
+  background-color: white;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: moveStripes 1s linear infinite;
+}
+
+.stripe:nth-child(2) {
+  top: 100px;
+}
+
+.stripe:nth-child(3) {
+  top: 200px;
+}
+
+.stripe:nth-child(4) {
+  top: 300px;
+}
+
+.stripe:nth-child(5) {
+  top: 400px;
+}
+
+@keyframes moveStripes {
+  from {
+    top: -50px;
+  }
+  to {
+    top: 100vh;
+  }
+}
