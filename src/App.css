@@ -89,7 +89,7 @@ button.close {
 button.close::after {
   content: '✕';
   font-size: large;
-  color: blue;
+  color: rgb(103, 103, 188);
   cursor: pointer;
 }
 button.close:hover::after {

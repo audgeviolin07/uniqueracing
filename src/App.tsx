@@ -1,6 +1,7 @@
 import { AccountsContextProvider } from './accounts/AccountsContext';
 import './App.css';
 import { AccountsPage } from './pages/Accounts';
+import CarGame from './pages/CarGame';
 import { SdkProvider } from './sdk/SdkContext';
 import { SignByLocalSignerModalProvider } from './signModal/SignByLocalSignerModalContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path='/' element={<AccountsPage />} />
               <Route path='/game' element={<AccountsPage />} />
+              <Route path='/cargame' element={<CarGame />} />
             </Routes>
           </AccountsContextProvider>
         </SignByLocalSignerModalProvider>
