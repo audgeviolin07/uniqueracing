@@ -1,8 +1,7 @@
 export const Logo = () => {
-
     return (
-        <div className="logo flex-vertical">
-                Logo Here
-        </div>
+      <div className="flex-vertical">
+        <img src="uniqueracinglogo.png" alt="Unique Racing Logo" />
+      </div>
     );
-  }
+  };
