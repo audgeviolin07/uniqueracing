@@ -5,6 +5,7 @@ import { List } from "../components/List";
 import { CreateLocalAccountModal } from "../modals/CreateLocalAccountModal";
 import { SignMessageModal } from "../modals/SignMessageModal";
 import { TransferAmountModal } from "../modals/TransferAmountModal";
+import { Logo } from "./logo";
 
 export const AccountsPage = () => {
   const { accounts, fetchMetamaskAccounts, fetchPolkadotAccounts } = useContext(AccountsContext);
@@ -43,8 +44,8 @@ export const AccountsPage = () => {
   }, []);
 
 
-  return <div className="page">
-    <div className="top-bar">
+  return <div className="page flex-vertical">
+    <div className="connect-bar flex-vertical">
       <button onClick={fetchMetamaskAccounts}>Connect MetaMask Wallet</button>
       <button onClick={fetchPolkadotAccounts}>Connect Polkadot Wallet</button>
       <button onClick={onCreateAccountClick}>Create local account</button>
@@ -61,6 +62,7 @@ export const AccountsPage = () => {
         </List.Item>
       })}
     </List>
+    <Logo />
     <TransferAmountModal 
       isVisible={transferAmountIsVisible} 
       sender={currentAccount}
