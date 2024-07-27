@@ -19,7 +19,15 @@ export const AccountsPage = () => {
         <div className="columns">
           <div className="column"></div>
           <div className="column center">
+            <div className="white-box">
+              <img src="players.png" alt="Top Image" className="top-image" />
+              <input type="text" placeholder="Enter text here" className="text-input" />
+            </div>
             <Logo />
+            <div className="white-box">
+              <img src="players.png" alt="Top Image" className="top-image" />
+              <input type="text" placeholder="Enter text here" className="text-input" />
+            </div>
             <div className="play-button">
               {currentAccount ? (
                 <Link to="/game">
