@@ -74,7 +74,13 @@ export const AccountsPage = () => {
           <div className="column"></div>
           <div className="column center">
             <Logo />
+            <div className="play-button">
+            <Link to="/game">
+          <button>Let's Play</button>
+        </Link>
+      </div>
           </div>
+          
           <div className="column"></div>
         </div>
       </div>
@@ -92,11 +98,6 @@ export const AccountsPage = () => {
           );
         })}
       </List>
-      <div className="play-button">
-        <Link to="/game">
-          <button>Let's Play</button>
-        </Link>
-      </div>
       <TransferAmountModal 
         isVisible={transferAmountIsVisible} 
         sender={currentAccount}
