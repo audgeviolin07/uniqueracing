@@ -43,8 +43,8 @@ export const AccountsPage = () => {
   }, []);
 
 
-  return <div className="page">
-    <div className="top-bar">
+  return <div className="page flex-vertical">
+    <div className="connect-bar flex-vertical">
       <button onClick={fetchMetamaskAccounts}>Connect MetaMask Wallet</button>
       <button onClick={fetchPolkadotAccounts}>Connect Polkadot Wallet</button>
       <button onClick={onCreateAccountClick}>Create local account</button>
