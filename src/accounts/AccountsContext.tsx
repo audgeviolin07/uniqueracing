@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 import { SdkContext } from "../sdk/SdkContext";
 import { SignByLocalSignerModalContext } from "../signModal/SignByLocalSignerModalContext";
 import { noop } from "../utils/common";
-import { getLocalAccounts, getMetamaskAccount, getPolkadotAccounts } from "./AccountsManager";
+import { getPolkadotAccounts } from "./AccountsManager";
 import { Account, AccountsContextValue } from "./types";
 
 export const AccountsContext = createContext<AccountsContextValue>({
@@ -17,7 +17,6 @@ export const AccountsContextProvider = ({ children }: PropsWithChildren) => {
   const { sdk } = useContext(SdkContext);
 
 
-
   const fetchPolkadotAccounts = useCallback(async () => {
     if (!sdk) return;
     const polkadotAccounts = await getPolkadotAccounts();
@@ -27,6 +26,7 @@ export const AccountsContextProvider = ({ children }: PropsWithChildren) => {
       polkadotAccounts.set(address, account);
     }
     const accountsToUpdate = new Map([...accounts, ...polkadotAccounts]);
+    
     setAccounts(accountsToUpdate);
   }, [sdk, accounts]);
 
@@ -34,10 +34,11 @@ export const AccountsContextProvider = ({ children }: PropsWithChildren) => {
     fetchPolkadotAccounts();
   }, [sdk])
 
+
   const contextValue = useMemo(() => ({
     accounts,
     setAccounts,
-    fetchPolkadotAccounts,
+    fetchPolkadotAccounts
   }), [accounts, fetchPolkadotAccounts]);
 
   return <AccountsContext.Provider value={contextValue}>{children}</AccountsContext.Provider>;
