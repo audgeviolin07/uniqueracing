@@ -15,58 +15,62 @@ export const CreateLocalAccountModal = ({isVisible, onClose}: CreateLocalAccount
   const [password, setPassword] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { fetchLocalAccounts } = useContext(AccountsContext)
+  return (
+    <></>
+  );
 
-  const onMnemonicPhraseChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMnemonicPhrase(e.target.value);
-  }
+  // const { fetchLocalAccounts } = useContext(AccountsContext)
 
-  const onGenerateMnemonicClick = () => {
-    const mnemonic = Sr25519Account.generateMnemonic()
-    setMnemonicPhrase(mnemonic);
-  }
+  // const onMnemonicPhraseChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setMnemonicPhrase(e.target.value);
+  // }
 
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  }
+  // const onGenerateMnemonicClick = () => {
+  //   const mnemonic = Sr25519Account.generateMnemonic()
+  //   setMnemonicPhrase(mnemonic);
+  // }
 
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }
+  // const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setName(e.target.value);
+  // }
 
-  const onCreate = async () => {
-    if (!mnemonicPhrase || !name || !password) return;
-    setIsLoading(true);
-    const { address } = Sr25519Account.fromUri(mnemonicPhrase); 
+  // const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setPassword(e.target.value);
+  // }
 
-    addLocalAccount(address, name, mnemonicPhrase, password);
+  // const onCreate = async () => {
+  //   if (!mnemonicPhrase || !name || !password) return;
+  //   setIsLoading(true);
+  //   const { address } = Sr25519Account.fromUri(mnemonicPhrase); 
 
-    fetchLocalAccounts();
+  //   addLocalAccount(address, name, mnemonicPhrase, password);
 
-    setIsLoading(false)
-    onClose();
-  }
+  //   fetchLocalAccounts();
 
-  return <Modal 
-    title="Transfer"
-    isVisible={isVisible} 
-    onClose={onClose} 
-  >
-    <div className="form-item">
-      <input type="text" placeholder="Mnemonic phrase" value={mnemonicPhrase} onChange={onMnemonicPhraseChange} />
-    </div>
-    <div className="form-item">
-      <button onClick={onGenerateMnemonicClick} disabled={isLoading} >Generate</button>
-    </div>
-    <div className="form-item">
-      <input type="text" placeholder="Name" value={name} onChange={onNameChange} />
-    </div>
-    <div className="form-item">
-      <input type="password" placeholder="Password" value={password} onChange={onPasswordChange} />
-    </div>
-    <div className="form-item">
-      <button onClick={onCreate} disabled={isLoading} >Create</button>
-      <button onClick={onClose} >Cancel</button>
-    </div>
-  </Modal>
+  //   setIsLoading(false)
+  //   onClose();
+  // }
+
+  // return <Modal 
+  //   title="Transfer"
+  //   isVisible={isVisible} 
+  //   onClose={onClose} 
+  // >
+  //   <div className="form-item">
+  //     <input type="text" placeholder="Mnemonic phrase" value={mnemonicPhrase} onChange={onMnemonicPhraseChange} />
+  //   </div>
+  //   <div className="form-item">
+  //     <button onClick={onGenerateMnemonicClick} disabled={isLoading} >Generate</button>
+  //   </div>
+  //   <div className="form-item">
+  //     <input type="text" placeholder="Name" value={name} onChange={onNameChange} />
+  //   </div>
+  //   <div className="form-item">
+  //     <input type="password" placeholder="Password" value={password} onChange={onPasswordChange} />
+  //   </div>
+  //   <div className="form-item">
+  //     <button onClick={onCreate} disabled={isLoading} >Create</button>
+  //     <button onClick={onClose} >Cancel</button>
+  //   </div>
+  // </Modal>
 }
