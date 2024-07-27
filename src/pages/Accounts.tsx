@@ -68,19 +68,18 @@ export const AccountsPage = () => {
             <h1>{currentAccount.balance?.toFixed(2) || "0"}</h1>
           </div>
         ) : (
-          <button onClick={fetchPolkadotAccounts}>Connect Polkadot Wallet</button>
+          <div className="uniquerace">uniquerace</div>
         )}
         <div className="columns">
           <div className="column"></div>
           <div className="column center">
             <Logo />
             <div className="play-button">
-            <Link to="/game">
-          <button>Let's Play</button>
-        </Link>
-      </div>
+              <Link to="/game">
+                <button>Let's Play</button>
+              </Link>
+            </div>
           </div>
-          
           <div className="column"></div>
         </div>
       </div>
