@@ -5,6 +5,7 @@ import { List } from "../components/List";
 import { CreateLocalAccountModal } from "../modals/CreateLocalAccountModal";
 import { SignMessageModal } from "../modals/SignMessageModal";
 import { TransferAmountModal } from "../modals/TransferAmountModal";
+import { Logo } from "./logo";
 
 export const AccountsPage = () => {
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
