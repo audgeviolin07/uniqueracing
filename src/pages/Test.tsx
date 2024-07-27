@@ -19,33 +19,7 @@ export const TestPage = () => {
   });
   console.log(currentAccount);
 
-  // const onSend = useCallback((account: Account) => () => {
-  //   setCurrentAccount(account);
-  //   setTransferAmountIsVisible(true);
-  // }, []);
-
-  // const onCloseTransferAmount = useCallback(() => {
-  //   setCurrentAccount(undefined);
-  //   setTransferAmountIsVisible(false);
-  // }, []);
-
-  // const onSignMessage = useCallback((account: Account) => () => {
-  //   setCurrentAccount(account);
-  //   setSignMessageIsVisible(true);
-  // }, []);
-
-  // const onCreateAccountClick = useCallback(() => {
-  //   setCreateAccountIsVisible(true);
-  // }, []);
-
-  // const onCloseSignMessage = useCallback(() => {
-  //   setCurrentAccount(undefined);
-  //   setSignMessageIsVisible(false);
-  // }, []);
-
-  // const onCloseCreateAccount = useCallback(() => {
-  //   setCreateAccountIsVisible(false);
-  // }, []);
+  
 
   return (
     <div className="page">
@@ -55,6 +29,8 @@ export const TestPage = () => {
             <h1>{currentAccount.name}</h1>
             <h1>{currentAccount.address}</h1>
             <h1>{currentAccount.balance?.toFixed(2) || "0"}</h1>
+
+
           </div>
         ) : (
           <button onClick={fetchPolkadotAccounts}>

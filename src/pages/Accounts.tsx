@@ -51,7 +51,44 @@ export const AccountsPage = () => {
     setCreateAccountIsVisible(false);
   }, []);
 
-  return <div className="page">
-    <h1>Index Page</h1>
-  </div>;
+  return (
+    <div className="page">
+      return{" "}
+      <div className="page flex-vertical">
+        <div className="connect-bar flex-vertical">
+          <button onClick={fetchPolkadotAccounts}>
+            Connect Polkadot Wallet
+          </button>
+          <button onClick={onCreateAccountClick}>Create local account</button>
+        </div>
+        {currentAccount ? (
+          <div>
+            <h1>{currentAccount.name}</h1>
+            <h1>{currentAccount.address}</h1>
+            <h1>{currentAccount.balance?.toFixed(2) || "0"}</h1>
+          </div>
+        ) : (
+          <button onClick={fetchPolkadotAccounts}>
+            Connect Polkadot Wallet
+          </button>
+        )}
+        <Logo />
+        <TransferAmountModal
+          isVisible={transferAmountIsVisible}
+          sender={currentAccount}
+          onClose={onCloseTransferAmount}
+        />
+        <SignMessageModal
+          isVisible={signMessageIsVisible}
+          account={currentAccount}
+          onClose={onCloseSignMessage}
+        />
+        <CreateLocalAccountModal
+          isVisible={createAccountIsVisible}
+          onClose={onCloseCreateAccount}
+        />
+      </div>
+      ;
+    </div>
+  );
 };
