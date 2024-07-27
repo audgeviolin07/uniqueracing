@@ -21,26 +21,29 @@ code {
 }
 
 button {
-  background-color: #90a7ec; /* Green background */
+  background: linear-gradient(45deg, #6fbdf3, #4ea0d3, #2e8cb3); /* Blue gradient matching the image */
   border: none; /* Remove borders */
   color: white; /* White text */
-  padding: 15px 32px; /* Some padding */
+  padding: 20px 40px; /* Increase padding for a bigger button */
   text-align: center; /* Center the text */
   text-decoration: none; /* Remove underline */
   display: inline-block; /* Get the element to line up horizontally */
-  font-size: 16px; /* Increase font size */
-  margin: 4px 2px; /* Some margin */
+  font-size: 20px; /* Increase font size */
+  margin: 10px 5px; /* Increase margin */
   cursor: pointer; /* Pointer/hand icon */
   transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
   outline: none; /* Remove outline */
+  box-shadow: 0 0 20px rgba(111, 189, 243, 0.7); /* Default glow effect */
+  border-radius: 12px;
+}
+
+
+button:hover {
+  box-shadow: 0 0 30px rgba(111, 189, 243, 1); /* Stronger glow on hover */
 }
 
 button:focus {
   outline: none; /* Ensure no outline on focus */
-}
-
-button:hover {
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); /* Green glow */
 }
 
 
