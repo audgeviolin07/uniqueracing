@@ -5,6 +5,7 @@ import { List } from "../components/List";
 import { CreateLocalAccountModal } from "../modals/CreateLocalAccountModal";
 import { SignMessageModal } from "../modals/SignMessageModal";
 import { TransferAmountModal } from "../modals/TransferAmountModal";
+import { Logo } from "./logo";
 
 export const AccountsPage = () => {
   const { accounts, fetchMetamaskAccounts, fetchPolkadotAccounts } = useContext(AccountsContext);
@@ -61,6 +62,7 @@ export const AccountsPage = () => {
         </List.Item>
       })}
     </List>
+    <Logo />
     <TransferAmountModal 
       isVisible={transferAmountIsVisible} 
       sender={currentAccount}

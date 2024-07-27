@@ -1,12 +1,8 @@
-export const logo = () => {
-
+export const Logo = () => {
 
     return (
-        <>
-            <div className="logo">
-
-            </div>
-        
-        </>
-    )
-}
+        <div className="logo flex-vertical">
+                Logo Here
+        </div>
+    );
+  }
