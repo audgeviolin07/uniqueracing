@@ -48,7 +48,6 @@ button:hover {
   background-color: #4CAF50;
   width: 100px;
   height: 100px;
-
 }
 
 .flex-vertical{
@@ -61,4 +60,11 @@ button:hover {
   position: fixed;
   bottom: 2vh;
   right: 3vw;
+}
+
+
+.play-button{
+  position: fixed;
+  bottom: 2vh;
+  
 }
