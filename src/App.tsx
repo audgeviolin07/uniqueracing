@@ -1,8 +1,10 @@
-import { AccountsContextProvider } from './accounts/AccountsContext';
-import './App.css';
-import { AccountsPage } from './pages/Accounts';
-import { SdkProvider } from './sdk/SdkContext';
-import { SignByLocalSignerModalProvider } from './signModal/SignByLocalSignerModalContext';
+import { AccountsContextProvider } from "./accounts/AccountsContext";
+import "./App.css";
+import { AccountsPage } from "./pages/Accounts";
+import { TestPage } from "./pages/Test";
+import { SdkProvider } from "./sdk/SdkContext";
+import { SignByLocalSignerModalProvider } from "./signModal/SignByLocalSignerModalContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -10,7 +12,12 @@ function App() {
       <SdkProvider>
         <SignByLocalSignerModalProvider>
           <AccountsContextProvider>
-            <AccountsPage />
+            <BrowserRouter>
+              <Routes>
+                <Route index element={<AccountsPage />} />
+                <Route path="/test" element={<TestPage />} />
+              </Routes>
+            </BrowserRouter>
           </AccountsContextProvider>
         </SignByLocalSignerModalProvider>
       </SdkProvider>
