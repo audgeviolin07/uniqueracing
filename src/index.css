@@ -28,7 +28,8 @@ button {
   text-align: center; /* Center the text */
   text-decoration: none; /* Remove underline */
   display: inline-block; /* Get the element to line up horizontally */
-  font-size: 20px; /* Increase font size */
+  font-size: 25px; /* Increase font size */
+  font-weight: 500;
   margin: 10px 5px; /* Increase margin */
   cursor: pointer; /* Pointer/hand icon */
   transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
