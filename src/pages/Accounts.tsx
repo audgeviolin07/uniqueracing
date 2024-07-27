@@ -7,6 +7,7 @@ import { CreateLocalAccountModal } from "../modals/CreateLocalAccountModal";
 import { SignMessageModal } from "../modals/SignMessageModal";
 import { TransferAmountModal } from "../modals/TransferAmountModal";
 import { Logo } from "./logo";
+import { Link } from "react-router-dom";
 
 export const AccountsPage = () => {
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
@@ -91,5 +92,37 @@ export const AccountsPage = () => {
         onClose={onCloseCreateAccount}
       />
     </div>
-  );
-};
+    <List>
+      {accountsArray.map(account => {
+        return <List.Item key={account.address}>
+            <span>{account.signerType}</span>
+            <span>{account.name}</span>
+            <span>{account.address}</span>
+            <span>{account.balance?.toFixed(2) || '0'}</span>
+              <button onClick={onSend(account)}>Send amount</button>
+              <button onClick={onSignMessage(account)}>Sign message</button>
+        </List.Item>
+      })}
+    </List>
+    <Logo />
+    <div className="play-button">
+      <Link to="/game">
+        <button>Let's Play</button>
+      </Link>
+    </div>
+    <TransferAmountModal 
+      isVisible={transferAmountIsVisible} 
+      sender={currentAccount}
+      onClose={onCloseTransferAmount}
+    />
+    <SignMessageModal 
+      isVisible={signMessageIsVisible} 
+      account={currentAccount}
+      onClose={onCloseSignMessage}
+    />
+    <CreateLocalAccountModal 
+      isVisible={createAccountIsVisible} 
+      onClose={onCloseCreateAccount}
+    />
+  </div>;
+}
