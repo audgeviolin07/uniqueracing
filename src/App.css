@@ -89,7 +89,7 @@ button.close {
 button.close::after {
   content: '✕';
   font-size: large;
-  color: blue;
+  color: rgb(103, 103, 188);
   cursor: pointer;
 }
 button.close:hover::after {
@@ -132,4 +132,40 @@ button.close:hover::after {
 .list-item>span:nth-child(3) {
   flex-grow: 1;
   text-align: start;
+}
+
+/* changes  */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.connect-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.columns {
+  display: flex;
+  width: 100%;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
