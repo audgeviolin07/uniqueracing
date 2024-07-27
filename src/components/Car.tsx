@@ -1,14 +1,18 @@
 import React from 'react';
 import './Car.css';
 
-const Car: React.FC = () => {
+interface CarProps {
+  color: string;
+}
+
+const Car: React.FC<CarProps> = ({ color }) => {
   return (
-    <div className='car'>
+    <div className='car' style={{ background: color }}>
       <div className='roof'></div>
-      <div className='hood'></div>
-      <div className='trunk'></div>
-      <div className='left-mirror'></div>
-      <div className='right-mirror'></div>
+      <div className='hood' style={{ background: color }}></div>
+      <div className='trunk' style={{ background: color }}></div>
+      <div className='left-mirror' style={{ background: color }}></div>
+      <div className='right-mirror' style={{ background: color }}></div>
       <div className='left-wheel front'></div>
       <div className='right-wheel front'></div>
       <div className='left-wheel back'></div>

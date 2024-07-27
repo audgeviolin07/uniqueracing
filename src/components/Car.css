@@ -4,7 +4,6 @@
   left: 50%;
   width: 30px;
   height: 60px;
-  background: red;
   transform: translate(-50%, -50%);
   z-index: 1000;
 }
@@ -24,7 +23,6 @@
   left: 5px;
   width: 20px;
   height: 10px;
-  background: #e60000;
 }
 
 .trunk {
@@ -33,7 +31,6 @@
   left: 5px;
   width: 20px;
   height: 10px;
-  background: #e60000;
 }
 
 .left-mirror {
@@ -42,7 +39,6 @@
   left: -3px;
   width: 3px;
   height: 5px;
-  background: #e60000;
 }
 
 .right-mirror {
@@ -51,14 +47,13 @@
   right: -3px;
   width: 3px;
   height: 5px;
-  background: #e60000;
 }
 
 .left-wheel,
 .right-wheel {
   position: absolute;
-  width: 8px; /* Increased wheel size */
-  height: 8px; /* Increased wheel size */
+  width: 8px;
+  height: 8px;
   background: black;
   border-radius: 50%;
 }

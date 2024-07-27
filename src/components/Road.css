@@ -1,6 +1,6 @@
 .road {
   position: relative;
-  width: 150px; /* Adjust the width as needed */
+  width: 300px;
   height: 100vh;
   background-color: #333;
   overflow: hidden;

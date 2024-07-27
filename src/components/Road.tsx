@@ -1,16 +1,18 @@
 import React from 'react';
-import Car from './Car';
 import './Road.css';
 
-const Road: React.FC = () => {
+interface RoadProps {
+  id: string;
+}
+
+const Road: React.FC<RoadProps> = ({ id }) => {
   return (
-    <div className="road">
-      <Car />
-      <div className="stripe"></div>
-      <div className="stripe"></div>
-      <div className="stripe"></div>
-      <div className="stripe"></div>
-      <div className="stripe"></div>
+    <div id={id} className='road'>
+      <div className='stripe'></div>
+      <div className='stripe'></div>
+      <div className='stripe'></div>
+      <div className='stripe'></div>
+      <div className='stripe'></div>
     </div>
   );
 };
