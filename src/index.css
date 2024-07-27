@@ -20,6 +20,7 @@ code {
   background-color: #191714;
 }
 
+
 button {
   background: linear-gradient(45deg, #6fbdf3, #4ea0d3, #2e8cb3); /* Blue gradient matching the image */
   border: none; /* Remove borders */
@@ -37,7 +38,6 @@ button {
   border-radius: 12px;
 }
 
-
 button:hover {
   box-shadow: 0 0 30px rgba(111, 189, 243, 1); /* Stronger glow on hover */
 }
@@ -45,7 +45,6 @@ button:hover {
 button:focus {
   outline: none; /* Ensure no outline on focus */
 }
-
 
 .logo{
   background-color: #4CAF50;
