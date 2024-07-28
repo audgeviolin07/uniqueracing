@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './game.css';
+import { Link } from 'react-router-dom';
 
 interface carData {
   score: number;
@@ -210,6 +211,9 @@ export const Game: React.FC = () => {
       <img className='gif-try' src={gameState === 'active' ? backActive : backStart} alt="" />
       {winner && <ShowMessage message={winner} />}
       {gameState === 'active' && currentMessage !== ''  && <ShowMessage message={currentMessage} />}
+      {gameState === 'finished' && <Link to={'/achievements'}><button style={{position:'fixed', top:'2vh', right:'1vw' ,zIndex:1000 ,width:'20vw', height:'10vh'}}>
+        Achievements
+        </button></Link>}
     </div>
   );
 };
