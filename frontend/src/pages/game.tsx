@@ -93,6 +93,29 @@ const Status: React.FC<StatusProps> = ({ leftData, rightData, time }) => {
   );
 };
 
+const texts: [string, string][] = [
+  [
+    "Rainy Weather Forecast",
+    "With heavy rain expected to hit the track just before the race starts, teams are already preparing for the wet conditions. Drivers will need to adapt quickly to the slippery surface, and pit crews are getting ready with wet-weather tires."
+  ],
+  [
+    "Tire Degradation Concerns",
+    "Teams are worried about the high tire degradation rates observed during practice sessions. The abrasive track surface is expected to wear down the tires rapidly, forcing teams to reconsider their tire strategies before the race begins."
+  ],
+  ['',''],['',''],
+  [
+    "Unpredictable Wind Gusts",
+    "Strong, unpredictable wind gusts are forecasted for the day of the race, which could impact car stability and aerodynamics. Engineers are working on adjustments to ensure that the cars can handle these challenging wind conditions."
+  ],
+  ['',''],
+  ['',''],
+  [
+    "Pit Lane Technical Issues",
+    "Technical issues in the pit lane have been reported, with some teams experiencing malfunctions in their fueling and tire-changing equipment. This could cause delays and strategic headaches if not resolved before the race starts."
+  ],
+  ['','']
+];
+
 interface MessageProps {
   message: string;
 }
@@ -114,6 +137,7 @@ export const Game: React.FC = () => {
   const [time, setTime] = useState<number>(0);
   const [gameState, setGameState] = useState<'null' | 'active' | 'finished'>('null');
   const [winner, setWinner] = useState<string | null>(null);
+  const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
     if (gameState === 'active') {
@@ -152,10 +176,25 @@ export const Game: React.FC = () => {
     }
   }, [gameState, leftCar.distance, rightCar.distance]);
 
+  useEffect(() => {
+    if (gameState === 'active') {
+      const interval = setInterval(() => {
+        setCurrentMessage(getRandomMessage());
+      }, 2000); // Change message every 2 seconds
+
+      return () => clearInterval(interval); // Cleanup interval on component unmount
+    }
+  }, [gameState]);
+
   const handleStartClick = () => {
     setGameState('active');
     setLeftCar(prev => { return { ...prev, acceleration: acc_left } });
     setRightCar(prev => { return { ...prev, acceleration: acc_right } });
+  };
+  const getRandomMessage = () => {
+    const randomIndex = Math.floor(Math.random() * texts.length);
+    const [title, message] = texts[randomIndex];
+    return `${title}: ${message}`;
   };
 
   return (
@@ -167,6 +206,7 @@ export const Game: React.FC = () => {
       {gameState === 'null' && <button className='button-start' onClick={handleStartClick}>Start</button>}
       <img className='gif-try' src={gameState === 'active' ? backActive : backStart} alt="" />
       {winner && <ShowMessage message={winner} />}
+      {gameState === 'active' && currentMessage !== ''  && <ShowMessage message={currentMessage} />}
     </div>
   );
 };
