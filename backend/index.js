@@ -76,39 +76,28 @@ app.post("/api/get-car-collection", async (req, res) => {
   }
 })
 
+app.post("/api/get-cars", async (req, res ) => {
+  try {
+    const { walletAddress } = req.body;
+    const cars =  await Car.find({ owner: walletAddress }).lean();
+    res.json({ cars: cars });
+    
+  } catch(e) {
+    console.error('Error creating car:', e);
+    res.status(500).json({ error: 'Failed to create car' });
+  }
+})
+
 // Endpoint to create a car
 app.post('/api/create-car', upload.single('image'), async (req, res) => {
   console.log('Create car request received:', req.body);
   try {
-    console.log('Uploading image to Pinata:', req.file.path);
-    const imageUrl = await uploadToPinata(req.file.path);
-    console.log('Image uploaded to Pinata:', imageUrl);
+    // console.log('Uploading image to Pinata:', req.file.path);
+    // const imageUrl = await uploadToPinata(req.file.path);
+    // console.log('Image uploaded to Pinata:', imageUrl);
 
-    const { CarcollectionId, walletAddress, name } = req.body;
-    console.log('Connecting to SDK');
-    const { account, sdk } = await connectSdk();
-    console.log('SDK connected, account:', account);
-
-    console.log('Creating car with SDK');
-    const { parsed } = await sdk.token.createV2({
-      CarcollectionId,
-      image: imageUrl,
-      owner: walletAddress,
-      attributes: [
-        { trait_type: 'Name', value: name },
-        { trait_type: 'Victories', value: 0 },
-        { trait_type: 'Defeats', value: 0 },
-        { trait_type: 'Speed', value: 0 },
-        { trait_type: 'Control', value: 0 },
-      ],
-    });
-
-    if (!parsed) {
-      console.error('Failed to parse car creation response');
-      return res.status(500).json({ error: 'Cannot create car' });
-    }
-
-    const carTokenId = parsed.tokenId;
+    const { collectionId, carTokenId, walletAddress, name } = req.body;
+  
     console.log('Car created, Token ID:', carTokenId);
 
     console.log(req.body)
@@ -116,12 +105,14 @@ app.post('/api/create-car', upload.single('image'), async (req, res) => {
     // Save car to the database
     const newCar = new Car({
       carTokenId,
-      CarcollectionId: new mongoose.Types.ObjectId(parseInt(CarcollectionId)), // Convert to ObjectId
+      collectionId: new mongoose.Types.ObjectId(parseInt(collectionId)), // Convert to ObjectId
       name,
-      image: imageUrl,
+      image: "https://gateway.pinata.cloud/ipfs/QmeNzaLfsUUi5pGmhrASEpXF52deCDuByeKbU7SuZ9toEi",
       owner: walletAddress,
       victories: 0,
       defeats: 0,
+      speed: 0,
+      control: 0
     });
 
     await newCar.save();
@@ -215,8 +206,6 @@ app.post('/api/get-achievement', async (req, res) => {
 
 
 
-
-
 // Endpoint to fetch user collections from the database
 app.post('/api/get-collections', async (req, res) => {
   const { walletAddress } = req.body;
@@ -272,7 +261,3 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
