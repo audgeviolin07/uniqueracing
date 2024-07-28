@@ -64,10 +64,21 @@ const useStyles = makeStyles({
     backgroundColor: "#ffffff",
     padding: "16px",
   },
+  topLeftImages: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    display: "flex",
+    gap: "10px",
+  },
+  image: {
+    width: "50px",
+    height: "50px",
+  },
 });
 
 export const AccountsPage = () => {
-  const classes = useStyles(); // Use custom styles
+  const classes = useStyles();
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const currentAccount = Array.from(accounts.values())[0];
 
@@ -81,12 +92,17 @@ export const AccountsPage = () => {
 
   return (
     <div className="page flex-vertical">
-      <div className="uniquerace"> uniquerace</div>
+      <div className={classes.topLeftImages}>
+        <img src="polka.png" alt="Polka Logo" className={classes.image} />
+        <img src="unique.png" alt="Unique Logo" className={classes.image} />
+        <img src="easya.png" alt="Unique Logo" className={classes.image} />
+      </div>
+      <div className="uniquerace">uniquerace</div>
       <div className="columns">
         <div className="column"></div>
         <div className="column center">
           <div className="white-box">
-            <div className="uniqueracemini">collections & achievements</div>
+            <div className="uniqueracemini">collections + achievements</div>
             <Accordion className={classes.accordion}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -99,7 +115,7 @@ export const AccountsPage = () => {
               <AccordionDetails className="uniqueracemini">
                 <ul>
                   <Link to="/trade">
-                    <li>collection 1</li>
+                    <li>Collection 1</li>
                   </Link>
                 </ul>
               </AccordionDetails>
@@ -112,7 +128,7 @@ export const AccountsPage = () => {
 
           <img src="uniqueracinglogo.png" className="uniqueracinglogo" alt="Unique Racing Logo" />
           <div className="white-box">
-            <div className="uniqueracemini">🏎️ current racecar</div>
+            <div className="uniqueracemini">current racecar</div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>
@@ -142,7 +158,7 @@ export const AccountsPage = () => {
                 }).then((e) => console.log(e));
               }}
             >
-              + make collection
+              make collection
             </button>
             <ImageDisplay imageUrl={imageUrl} />
           </div>
