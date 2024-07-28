@@ -1,7 +1,26 @@
+.game {
+  width: 100vw;
+  height: 100vh;
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  height: 2vh;
+  padding: 10px;
+  background-color: #333;
+  color: #FFF;
+}
+
+.status div {
+  margin: 0 10px;
+}
+
 .road-container {
     position: relative;
     width: 100%;
-    height: 100vh; /* Adjust height as needed */
+    height: 98vh; /* Adjust height as needed */
     overflow: hidden;
     display: flex;
     justify-content: center; /* Center the road horizontally */
@@ -60,19 +79,6 @@
     }
   }
   
-  .car {
-    position: absolute;
-    width: 30px;
-    height: 60px;
-    background-color: red;
-    bottom: 10%; /* Starting position */
-    top: 90%;
-    transition: left 0.2s ease;
-  }
-  
-  .car.blue {
-    background-color: blue;
-  }
   
   .start-line {
     position: absolute;
@@ -82,14 +88,4 @@
     top: 15%;
   }
   
-  .status {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #333;
-    color: #FFF;
-  }
-  
-  .status div {
-    margin: 0 10px;
-  }
+

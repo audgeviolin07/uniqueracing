@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Car from '../components/Car';
 import './game.css';
 
 interface CarProps {
@@ -29,9 +30,9 @@ const Road: React.FC = () => {
   );
 };
 
-const Car: React.FC<CarProps> = ({ className, position }) => {
-  return <div className={`car ${className}`} style={{ left: `${position}%` }}></div>;
-};
+// const Car: React.FC<CarProps> = ({ className, position }) => {
+//   return <div className={`car ${className}`} style={{ left: `${position}%` }}></div>;
+// };
 
 const Status: React.FC<StatusProps> = ({ score, speed }) => {
   return (
@@ -45,8 +46,8 @@ const Status: React.FC<StatusProps> = ({ score, speed }) => {
 export const Game: React.FC = () => {
   const [score, setScore] = useState<number>(0);
   const [speed, setSpeed] = useState<number>(0);
-  const [leftCarPosition, setLeftCarPosition] = useState<number>(40); // Adjusted for percentage
-  const [rightCarPosition, setRightCarPosition] = useState<number>(60); // Adjusted for percentage
+  // const [leftCarPosition, setLeftCarPosition] = useState<number>(40); // Adjusted for percentage
+  // const [rightCarPosition, setRightCarPosition] = useState<number>(60); // Adjusted for percentage
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,11 +63,11 @@ export const Game: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='game flex-vertical'>
       <Status score={score} speed={speed} />
       <Road />
-      <Car className="red" position={leftCarPosition} />
-      <Car className="blue" position={rightCarPosition} />
+      <Car color='red' className={ 'dash car-left'} leftPosition='30%' />
+      <Car color='blue' leftPosition='70%' />
       <button onClick={handleStartClick}>Start</button>
     </div>
   );

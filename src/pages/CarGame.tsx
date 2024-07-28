@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Road from '../components/Road';
 import Car from '../components/Car';
 
+
+
 const CarGame: React.FC = () => {
   const [winner, setWinner] = useState<string | null>(null);
+  const [gameState, setGameState] = useState<'null'|'active'|'finished'>('null');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -12,6 +15,10 @@ const CarGame: React.FC = () => {
 
     return () => clearTimeout(timer); // Cleanup the timer on component unmount
   }, []);
+
+  const startGame = () => {
+    setGameState('active');
+  }
 
   return (
     <div
@@ -22,12 +29,15 @@ const CarGame: React.FC = () => {
       }}
     >
       <div style={{ position: 'relative' }}>
-        <Road id='player1' />
-        <Car color='red' className={winner === 'player1' ? 'dash' : ''} />
+        <Road id='player1' classes={gameState !== 'null'?'stripe-running' : ''} />
+        <Car color='red' className={winner === 'player1' ? 'dash' : '' } leftPosition='0'/>
       </div>
+      {gameState === 'null' && <div className='flex-vertical'>
+        <button onClick={startGame}>Start Game</button>
+      </div>}
       <div style={{ position: 'relative' }}>
-        <Road id='player2' />
-        <Car color='blue' className={winner === 'player2' ? 'dash' : ''} />
+        <Road id='player2' classes={gameState !== 'null'?'stripe-running' : ''} />
+        <Car color='blue' className={winner === 'player2' ? 'dash' : ''} leftPosition='0'/>
       </div>
     </div>
   );
