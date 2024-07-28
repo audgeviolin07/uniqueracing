@@ -8,20 +8,14 @@ import { TransferAmountModal } from "../modals/TransferAmountModal";
 import { SdkContext } from "../sdk/SdkContext";
 
 export const TestPage = () => {
-  const { accounts, fetchPolkadotAccounts,  } = useContext(AccountsContext);
+  const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const account = Array.from(accounts.values());
   const [currentAccount, setCurrentAccount] = useState<Account>();
-  const [transferAmountIsVisible, setTransferAmountIsVisible] = useState(false);
-  const [signMessageIsVisible, setSignMessageIsVisible] = useState(false);
-  const [createAccountIsVisible, setCreateAccountIsVisible] = useState(false);
   const { sdk } = useContext(SdkContext);
 
   useEffect(() => {
     setCurrentAccount(account[0]);
   });
-
-  const test = sdk?.nfts.account;
-  console.log(test)
 
   return (
     <div className="page">
@@ -30,9 +24,24 @@ export const TestPage = () => {
           <div>
             <h1>{currentAccount.name}</h1>
             <h1>{currentAccount.address}</h1>
+            {/* <h1>{currentAccount.}</h1> */}
             <h1>{currentAccount.balance?.toFixed(2) || "0"}</h1>
-            <button onClick={async () => {
-            }}>Create new collection? (test)</button>
+            <button
+              onClick={async () => {
+                // const result = await sdk?.token.createV2({
+                //   name: "",
+                //   // image: imageUrl,
+                //   // owner: walletAddress, 
+                //   attributes: [
+                //     { trait_type: "Name", value: name },
+                //     { trait_type: "Victories", value: 0 },
+                //     { trait_type: "Defeats", value: 0 },
+                //   ],
+                // });
+              }}
+            >
+              Create new collection? (test)
+            </button>
           </div>
         ) : (
           <button onClick={fetchPolkadotAccounts}>
@@ -40,21 +49,6 @@ export const TestPage = () => {
           </button>
         )}
       </div>
-
-      {/* <TransferAmountModal 
-      isVisible={transferAmountIsVisible} 
-      sender={currentAccount}
-      onClose={onCloseTransferAmount}
-    />
-    <SignMessageModal 
-      isVisible={signMessageIsVisible} 
-      account={currentAccount}
-      onClose={onCloseSignMessage}
-    />
-    <CreateLocalAccountModal 
-      isVisible={createAccountIsVisible} 
-      onClose={onCloseCreateAccount}
-    /> */}
     </div>
   );
 };

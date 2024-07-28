@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { ChainPropertiesResponse } from "@unique-nft/sdk";
-import { Sdk } from '@unique-nft/sdk/full';
+import { Sdk, CHAIN_CONFIG} from '@unique-nft/sdk/full';
+const { Sr25519Account } = require('@unique-nft/sr25519');
 
 export type SdkContextValueType = {
   sdk: Sdk | undefined
@@ -12,7 +13,7 @@ export const SdkContext = createContext<SdkContextValueType>({
   chainProperties: undefined
 });
 
-const baseUrl = "https://rest.unique.network/opal/v1/";
+const baseUrl = CHAIN_CONFIG.opal.restUrl;
 
 export const SdkProvider = ({ children }: PropsWithChildren) => {
   const [sdk, setSdk] = useState<Sdk>();
