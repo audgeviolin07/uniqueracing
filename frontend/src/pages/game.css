@@ -22,12 +22,23 @@
 .message{
   position: fixed;
   top: 10vh;
-  width: 30vw;
+  width: 70vw;
   height: 20vh;
   background: #ffffffa1;
   z-index: 500;
   border-radius: 10%;
   color: black;
+  font-size: 30px; /* Large font size */
+  font-weight: bold; /* Bold text */
+  background: linear-gradient(45deg, #ffffff, #ffffff, #ffffff); /* Blue gradient */
+  -webkit-background-clip: text; /* For Safari and Chrome */
+  -webkit-text-fill-color: transparent; /* For Safari and Chrome */
+  background-clip: text; /* Standard syntax */
+  color: transparent; /* Standard syntax */
+  text-align: center; /* Center the text */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+               0 0 20px rgba(255, 255, 255, 0.6), 
+               0 0 30px rgba(246, 246, 246, 0.4); /* Glowing effect */
 }
 
 .status div {
