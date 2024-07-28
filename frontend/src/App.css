@@ -75,8 +75,32 @@ input[type="text"], input[type="password"] {
 }
 
 button {
-  cursor: pointer;
-  padding: 8px 16px;
+  font-size: 40px; /* Large font size */
+  font-weight: bold; /* Bold text */
+  background: linear-gradient(45deg, #ffffff, #4ea0d3, #2e8cb3); /* Blue gradient */
+  -webkit-background-clip: text; /* For Safari and Chrome */
+  -webkit-text-fill-color: transparent; /* For Safari and Chrome */
+  background-clip: text; /* Standard syntax */
+  color: transparent; /* Standard syntax */
+  text-align: center; /* Center the text */
+  position: relative;
+  top: 50px;
+  margin: 20px 0;
+  text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
+               0 0 20px rgba(111, 189, 243, 0.6), 
+               0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
+
+              }
+.menu {
+  display: none; /* Hide the menu by default */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 150px; /* Adjust the position as needed */
+  width: 200px; /* Adjust the width as needed */
 }
 
 button.close {
@@ -185,24 +209,55 @@ button.close:hover::after {
                0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
 }
 
-.white-box {
-  background-color: rgba(255, 255, 255, 0);
- 
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  text-align: center;
-  width: 300px; /* Added width */
-  height: 200px; /* Added height */
-}
+.uniqueracemini {
+    font-size: 40px; /* Large font size */
+    font-weight: bold; /* Bold text */
+    background: linear-gradient(45deg, #ffffff, #4ea0d3, #2e8cb3); /* Blue gradient */
+    -webkit-background-clip: text; /* For Safari and Chrome */
+    -webkit-text-fill-color: transparent; /* For Safari and Chrome */
+    background-clip: text; /* Standard syntax */
+    color: transparent; /* Standard syntax */
+    text-align: center; /* Center the text */
+    text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
+                 0 0 20px rgba(111, 189, 243, 0.6), 
+                 0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
+  }
+
+  .white-box {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    width: 300px; /* Added width */
+    height: 300px; /* Adjusted height to make the box bigger */
+  }
+
+  .nft-box {
+    font-size: 40px; /* Large font size */
+    font-weight: bold; /* Bold text */
+    background: linear-gradient(45deg, #ffffff, #4ea0d3, #2e8cb3); /* Blue gradient */
+    -webkit-background-clip: text; /* For Safari and Chrome */
+    -webkit-text-fill-color: transparent; /* For Safari and Chrome */
+    background-clip: text; /* Standard syntax */
+    color: transparent; /* Standard syntax */
+    text-align: center; /* Center the text */
+    position: relative;
+    width: 300px;
+    height: 300px;
+    top: 50px;
+    margin: 20px 0;
+    text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
+                 0 0 20px rgba(111, 189, 243, 0.6), 
+                 0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
+  
+  }
 
 .top-image {
   max-width: 100%;
   height: auto;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  border-radius: 10px;
 }
 
 .text-input {

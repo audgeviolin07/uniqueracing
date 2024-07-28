@@ -11,27 +11,45 @@ import { Link } from "react-router-dom";
 export const AccountsPage = () => {
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const currentAccount = Array.from(accounts.values())[0];
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
 
   return (
     <>
       <div className="page flex-vertical">
-      <div className="uniquerace">uniquerace</div>
+        <div className="uniquerace">uniquerace</div>
         <div className="columns">
           <div className="column"></div>
           <div className="column center">
             <div className="white-box">
-              <img src="players.png" alt="Top Image" className="top-image" />
-              <input type="text" placeholder="Enter text here" className="text-input" />
+              <div className="uniqueracemini">collections</div>
+              <button onClick={toggleMenu}>show collections</button>
+              <button>create collection</button>
+              {showMenu && (
+                <div className="menu">
+                  <ul>
+                    <li>Collection 1</li>
+                    <li>Collection 2</li>
+                    <li>Collection 3</li>
+                  </ul>
+                </div>
+              )}
             </div>
             <Logo />
             <div className="white-box">
-              <img src="players.png" alt="Top Image" className="top-image" />
-              <input type="text" placeholder="Enter text here" className="text-input" />
+              <div className="uniqueracemini">my nft racecar</div>
+              <button className="nft-box">
+              <img src="racecar.png" alt="Top Image" className="top-image" />
+              </button>
+             
             </div>
             <div className="play-button">
               {currentAccount ? (
                 <Link to="/game">
-                  <button>Let's Play</button>
+                  <button>play</button>
                 </Link>
               ) : (
                 <button onClick={fetchPolkadotAccounts}>
