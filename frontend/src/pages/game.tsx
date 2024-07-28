@@ -194,6 +194,9 @@ export const Game: React.FC = () => {
   const getRandomMessage = () => {
     const randomIndex = Math.floor(Math.random() * texts.length);
     const [title, message] = texts[randomIndex];
+    if (title===''){
+      return '';
+    }
     return `${title}: ${message}`;
   };
 
