@@ -20,6 +20,7 @@ import { useCreateCollection } from "../utils/sdk-methods/create-collection";
 import { CreateCollectionParams } from "../utils/sdk-methods/types";
 import axios from "axios";
 import { SdkContext } from "../sdk/SdkContext";
+import Collection from "../../../backend/models/Collection";
 
 const useStyles = makeStyles({
   nftBox: {
@@ -75,41 +76,34 @@ export const AccountsPage = () => {
   const currentAccount = Array.from(accounts.values())[0];
 
   const [imageUrl, setImageUrl] = useState<string>("");
-  const { sdk } = useContext(SdkContext) ;
+  const { sdk } = useContext(SdkContext);
 
-  // ############################################Create Collections ####################################################################################################################################
-  // const { createCollection, loading, error, collectionId } = useCreateCollection();
-  // const [name, setName] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [symbol, setSymbol] = useState<string>("");
-  // const [file, setFile] = useState<File | null>(null);
+  const [hasCollection, setHasCollection] = useState(false);
 
-  // const handleSubmit = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   if (!file) {
-  //     alert("Please select a file");
-  //     return;
-  //   }
+  const fetchCollections = useCallback(async () => {
+    if (!sdk) return;
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/get-collections",
+        { walletAddress: currentAccount.address }
+      );
+      console.log(response.data);
+      if (response.data.collections.length !== 0) setHasCollection(true);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [currentAccount, axios]);
 
-  //   const params: CreateCollectionParams = {
-  //     name,
-  //     description,
-  //     symbol,
-  //     file,
-  //   };
-
-  //   const result = await createCollection(params);
-  //   if (result.error) {
-  //     alert(result.error);
-  //   }
-  // };
-
-  // ####################################################################################################################################
+  useEffect(() => {
+    fetchCollections();
+  }, [fetchCollections]);
 
   const handleGenerate = async (prompt: string) => {
     const url = await generateImage("image of indie race car");
     setImageUrl(url);
   };
+
+  console.log(currentAccount)
 
   return (
     <>
@@ -119,27 +113,81 @@ export const AccountsPage = () => {
         <div className="columns">
           <div className="column"></div>
           <div className="column center">
-            
             <div className="white-box">
-              <div className="uniqueracemini">collections</div>
-              <Accordion className={classes.accordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  className={classes.accordionSummary}
-                >
-                  <button className={classes.nftBox}>Show Collection</button>
-                </AccordionSummary>
-                <AccordionDetails className={classes.nftBox}>
-                  <ul>
-                    
-                    <Link to="/trade">
-                    <li>Collection 1</li>
-                </Link>
-                  </ul>
-                </AccordionDetails>
-              </Accordion>
+              <div className="uniqueracemini">your collections</div>
+              {hasCollection ? (
+                <Accordion className={classes.accordion}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    className={classes.accordionSummary}
+                  >
+                    <button className={classes.nftBox}>Show Collection</button>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.nftBox}>
+                    <ul>
+                      <Link to="/trade">
+                        <li>Collection 1</li>
+                      </Link>
+                    </ul>
+                  </AccordionDetails>
+                </Accordion>
+              ) : (
+                <h1>
+                  You seem to have no collections. Why not{" "}
+                  <button
+                    style={{ display: "inline" }}
+                    onClick={async () => {
+                      generateImage("image of indie race car").then((url) => {
+                        console.log("Generated image");
+                        sdk?.collection
+                          .createV2({
+                            name: "Racing Dreams",
+                            description: "Racing simulation demo",
+                            symbol: "CAR",
+                            cover_image: { url: url },
+                            // NOTICE: activate nesting for collection admin in order to assign achievements
+                            permissions: { nesting: { collectionAdmin: true } },
+                            encodeOptions: {
+                              overwriteTPPs: [
+                                {
+                                  // tokenData is a container for attributes
+                                  key: "tokenData",
+                                  permission: {
+                                    // NOTICE: limit mutability for admins only
+                                    collectionAdmin: true,
+                                    tokenOwner: false,
+                                    mutable: true,
+                                  },
+                                },
+                              ],
+                            },
+                          })
+                          .then((e) => {
+                            const collectionId = e.parsed?.collectionId;
+                            return axios
+                              .post(
+                                "http://localhost:3001/api/create-collection",
+                                {
+                                  collectionId,
+                                  name: "Racing Dreams",
+                                  description: "Racing simulation demo",
+                                  symbol: "CAR",
+                                  url,
+                                  owner: currentAccount.address,
+                                }
+                              )
+                              .then((e) => console.log(e))
+                              .catch((error) => console.log(error));
+                          });
+                      });
+                    }}
+                  >
+                    make one?
+                  </button>
+                </h1>
+              )}
               {/* <button onClick={} className={classes.nftBox}>Create Collection</button> */}
               <div>
                 {/* <h1>Create Collection</h1> */}
@@ -189,32 +237,36 @@ export const AccountsPage = () => {
               <button className="nft-box">
                 <img src="racecar.png" alt="Top Image" className="top-image" />
               </button>
-             
+
               <button
                 onClick={async () => {
                   generateImage("image of indie race car").then((url) => {
-                    console.log("Generated image")
-                    sdk?.collection.createV2({
-                      name: "Racing Dreams",
-                      description: "Racing simulation demo",
-                      symbol: "CAR",
-                      cover_image: {url: url},
-                      // NOTICE: activate nesting for collection admin in order to assign achievements
-                      permissions: {nesting: {collectionAdmin: true}},
-                      encodeOptions: {
-                        overwriteTPPs: [
-                          {
-                            // tokenData is a container for attributes
-                            key: 'tokenData',
-                            permission: {
-                              // NOTICE: limit mutability for admins only 
-                              collectionAdmin: true, tokenOwner: false, mutable: true
-                            }
-                          }
-                        ],
-                      },
-                    }).then(e => console.log(e))
-                  })
+                    console.log("Generated image");
+                    sdk?.collection
+                      .createV2({
+                        name: "Racing Dreams",
+                        description: "Racing simulation demo",
+                        symbol: "CAR",
+                        cover_image: { url: url },
+                        // NOTICE: activate nesting for collection admin in order to assign achievements
+                        permissions: { nesting: { collectionAdmin: true } },
+                        encodeOptions: {
+                          overwriteTPPs: [
+                            {
+                              // tokenData is a container for attributes
+                              key: "tokenData",
+                              permission: {
+                                // NOTICE: limit mutability for admins only
+                                collectionAdmin: true,
+                                tokenOwner: false,
+                                mutable: true,
+                              },
+                            },
+                          ],
+                        },
+                      })
+                      .then((e) => console.log(e));
+                  });
                 }}
               >
                 TEST MAKE COLLECTION
