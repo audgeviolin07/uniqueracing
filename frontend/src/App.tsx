@@ -8,6 +8,7 @@ import { TestPage } from './pages/Test';
 import { SdkProvider } from './sdk/SdkContext';
 import { SignByLocalSignerModalProvider } from './signModal/SignByLocalSignerModalContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import WinnerPage from './pages/WinnerPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path='/trade' element={<CarTrade />} />
               <Route path='/cargame' element={<CarGame />} />
               <Route path='/test' element={<TestPage />} />
+              <Route path='/winner' element={<WinnerPage />} />
             </Routes>
           </AccountsContextProvider>
         </SignByLocalSignerModalProvider>
