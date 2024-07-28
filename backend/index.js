@@ -1,11 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const { connectSdk } = require('./utils/connect-sdk');
 const { uploadToPinata } = require('./utils/upload-to-pinata');
 const multer = require('multer');
 const dotenv = require('dotenv');
+const Collection = require('./models/Collection');
+const Car = require('./models/Car');
 
-dotenv.config();
+dotenv.config(); // Make sure this is at the top
 
 const app = express();
 app.use(cors());
@@ -15,23 +18,49 @@ const upload = multer({ dest: 'uploads/' });
 
 const PORT = process.env.PORT || 3001;
 
+// Enable debug mode for Mongoose
+mongoose.set('debug', true);
+
+console.log('Connecting to MongoDB with URI:', process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+})
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    console.error('Check your MongoDB URI and ensure your IP address is whitelisted in MongoDB Atlas');
+  });
+
+
 // Endpoint to create a new collection
 app.post('/api/create-collection', upload.single('image'), async (req, res) => {
+  console.log('Create collection request received:', req.body);
   try {
+    console.log('Uploading image to Pinata:', req.file.path);
     const imageUrl = await uploadToPinata(req.file.path);
-    const { account, sdk } = await connectSdk();
+    console.log('Image uploaded to Pinata:', imageUrl);
 
-    const { parsed } = await sdk.collection.createV2({
-      name: req.body.name,
-      description: req.body.description,
-      symbol: req.body.symbol,
-      cover_image: { url: imageUrl },
-      permissions: { nesting: { collectionAdmin: true } },
+    console.log('Connecting to SDK');
+    const { account, sdk } = await connectSdk();
+    console.log('SDK connected, account:', account);
+
+    console.log('Creating collection with SDK');
+    const {parsed} = await sdk.collection.createV2({
+      name: "Racing Dreams",
+      description: "Racing simulation demo",
+      symbol: "CAR",
+      cover_image: {url: "https://gateway.pinata.cloud/ipfs/QmeNzaLfsUUi5pGmhrASEpXF52deCDuByeKbU7SuZ9toEi"},
+      // NOTICE: activate nesting for collection admin in order to assign achievements
+      permissions: {nesting: {collectionAdmin: true}},
       encodeOptions: {
         overwriteTPPs: [
           {
+            // tokenData is a container for attributes
             key: 'tokenData',
             permission: {
+              // NOTICE: limit mutability for admins only 
               collectionAdmin: true, tokenOwner: false, mutable: true
             }
           }
@@ -39,10 +68,29 @@ app.post('/api/create-collection', upload.single('image'), async (req, res) => {
       },
     });
 
-    if (!parsed) return res.status(500).json({ error: 'Cannot create collection' });
+    console.log(req.body)
+
+    if (!parsed) {
+      console.error('Failed to parse collection creation response');
+      return res.status(500).json({ error: 'Cannot create collection' });
+    }
 
     const collectionId = parsed.collectionId;
-    console.log('Collection ID:', collectionId);
+    console.log('Collection created, ID:', collectionId);
+
+    // Save collection to the database
+    const newCollection = new Collection({
+      collectionId,
+      name: req.body.name,
+      description: req.body.description,
+      symbol: req.body.symbol,
+      coverImage: imageUrl,
+      owner: account.address, // Assuming 'account' has the user's address
+    });
+
+    await newCollection.save();
+    console.log('Collection saved to database:', newCollection);
+
     res.json({ collectionId });
   } catch (error) {
     console.error('Error creating collection:', error);
@@ -52,11 +100,18 @@ app.post('/api/create-collection', upload.single('image'), async (req, res) => {
 
 // Endpoint to create a car
 app.post('/api/create-car', upload.single('image'), async (req, res) => {
+  console.log('Create car request received:', req.body);
   try {
+    console.log('Uploading image to Pinata:', req.file.path);
     const imageUrl = await uploadToPinata(req.file.path);
-    const { collectionId, walletAddress, name } = req.body;
-    const { account, sdk } = await connectSdk();
+    console.log('Image uploaded to Pinata:', imageUrl);
 
+    const { collectionId, walletAddress, name } = req.body;
+    console.log('Connecting to SDK');
+    const { account, sdk } = await connectSdk();
+    console.log('SDK connected, account:', account);
+
+    console.log('Creating car with SDK');
     const { parsed } = await sdk.token.createV2({
       collectionId,
       image: imageUrl,
@@ -68,9 +123,30 @@ app.post('/api/create-car', upload.single('image'), async (req, res) => {
       ],
     });
 
-    if (!parsed) return res.status(500).json({ error: 'Cannot create car' });
+    if (!parsed) {
+      console.error('Failed to parse car creation response');
+      return res.status(500).json({ error: 'Cannot create car' });
+    }
 
     const carTokenId = parsed.tokenId;
+    console.log('Car created, Token ID:', carTokenId);
+
+    console.log(req.body)
+
+    // Save car to the database
+    const newCar = new Car({
+      carTokenId,
+      collectionId: new mongoose.Types.ObjectId(parseInt(collectionId)), // Convert to ObjectId
+      name,
+      image: imageUrl,
+      owner: walletAddress,
+      victories: 0,
+      defeats: 0,
+    });
+
+    await newCar.save();
+    console.log('Car saved to database:', newCar);
+
     res.json({ carTokenId });
   } catch (error) {
     console.error('Error creating car:', error);
@@ -80,11 +156,18 @@ app.post('/api/create-car', upload.single('image'), async (req, res) => {
 
 // Endpoint to fetch car details
 app.post('/api/get-car', async (req, res) => {
+  console.log('Get car request received:', req.body);
   const { collectionId, tokenId } = req.body;
-  const { sdk } = await connectSdk();
 
   try {
+    console.log('Connecting to SDK');
+    const { sdk } = await connectSdk();
+    console.log('SDK connected');
+
+    console.log('Fetching car details from SDK');
     const carDetails = await sdk.token.getV2({ collectionId, tokenId });
+    console.log('Car details fetched:', carDetails);
+
     res.json({ carDetails });
   } catch (error) {
     console.error('Failed to fetch car details:', error);
@@ -92,31 +175,31 @@ app.post('/api/get-car', async (req, res) => {
   }
 });
 
-//Endpoint to fetch user collections
+// Endpoint to fetch user collections from the database
 app.post('/api/get-collections', async (req, res) => {
   const { walletAddress } = req.body;
   console.log('Fetching collections for wallet address:', walletAddress);
-  const { sdk } = await connectSdk();
 
   try {
-    console.log('Connecting to SDK');
-    const collections = await sdk.collection.list({ owner: walletAddress });
+    console.log('Finding collections in database');
+    console.log(walletAddress)
+    const collections = await Collection.find({ owner: walletAddress }).lean();
+    console.log('Collections found:', collections);
 
-    // Fetch detailed collection properties for each collection
-    const detailedCollections = await Promise.all(
-      collections.data.map(async (result) => {
-        try {
-          const collection = await sdk.collection.get({ idOrAddress: result.collectionId });
-          return collection;
-        } catch (error) {
-          console.error('Error fetching collection details for:', result.collectionId, error);
-          throw error; // propagate the error to the main catch block
-        }
-      })
-    );
+    console.log('Fetching cars for each collection');
+    const collectionsWithCars = await Promise.all(collections.map(async (collection) => {
+      try {
+        const cars = await Car.find({ collectionId: mongoose.Types.ObjectId(collection.collectionId) }).lean();
+        console.log('Cars found for collection:', collection.collectionId, cars);
+        return { ...collection, cars: cars || [] };
+      } catch (carError) {
+        console.error(`Failed to fetch cars for collection ${collection.collectionId}:`, carError.message);
+        return { ...collection, cars: [] }; // Handle this case gracefully
+      }
+    }));
 
-    console.log('Detailed collections fetched:', detailedCollections);
-    res.json({ collections: detailedCollections });
+    console.log('Fetched collections with cars from DB:', collectionsWithCars);
+    res.json({ collections: collectionsWithCars });
   } catch (error) {
     console.error('Failed to fetch collections:', error.message);
     console.error(error.stack);
