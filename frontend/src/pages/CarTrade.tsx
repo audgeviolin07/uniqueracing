@@ -78,52 +78,33 @@ const CarTrade: React.FC = () => {
   };
 
   return (
-    <div className="page flex-vertical">
-      <div className="uniquerace">trade - collection 1</div>
-      <div className="columns">
-        <div
-          className="column center"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-          }}
-        >
-          <div className="white-box">
-            <div className="uniqueracemini"> racecar 1 </div>
-            <button className="nft-box">
-              <img src="racecar.png" alt="Top Image" className="top-image" />
-            </button>
-            <button>trade for powerup</button>
-          </div>
-
-          <div className="white-box">
-            <div className="uniqueracemini">racecar 2</div>
-            <button className="nft-box">
-              <img src="racecar.png" alt="Top Image" className="top-image" />
-            </button>
-
-            <button>trade for powerup</button>
-          </div>
-          <div className="white-box">
-            <div className="uniqueracemini">racecar 3</div>
-            <button className="nft-box">
-              <img src="racecar.png" alt="Top Image" className="top-image" />
-            </button>
-
-            <button>trade for powerup</button>
-          </div>
-
-          <div className="white-box">
-            <div className="uniqueracemini"> racecar 4 </div>
-            <button className="nft-box">
-              <img src="racecar.png" alt="Top Image" className="top-image" />
-            </button>
-            <button>trade for powerup</button>
-          </div>
-
-          <div className="white-box">
-            
-          </div>
+    <div style={{ padding: "4rem", height: "100%" }}>
+      <div className="uniquerace">trade - cars</div>
+      <div
+        className=""
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+        }}
+      >
+        <div className="white-box" style={{ marginBottom: "18rem" }}>
+          <input
+            type="text"
+            style={{}}
+            placeholder="enter your car name"
+            className="uniqueraceminimini"
+          />
+          <button className="nft-box">
+            <img src="unique.png" alt="Top Image" className="top-image" />
+          </button>
+          <button>create car</button>
+        </div>
+        <div className="white-box" style={{ marginBottom: "18rem" }}>
+          <div className="uniqueracemini"> racecar 1 </div>
+          <button className="nft-box">
+            <img src="racecar.png" alt="Top Image" className="top-image" />
+          </button>
+          <button>trade for powerup</button>
         </div>
       </div>
     </div>
