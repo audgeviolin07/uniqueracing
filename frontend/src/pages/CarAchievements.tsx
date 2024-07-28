@@ -151,7 +151,7 @@ const CarAchievements: React.FC = () => {
 
   return (
     <div className="page flex-vertical">
-      <div className={classes.uniquerace}>Trade - Achievements to Powerups</div>
+      <div className="uniquerace">Trade - Achievements to Powerups</div>
       <div className="columns">
         <div className="column"></div>
         <div className="column center">
