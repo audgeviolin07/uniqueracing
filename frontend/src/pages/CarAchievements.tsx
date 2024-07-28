@@ -6,6 +6,8 @@ import { generateImage } from "../openai";
 import { makeStyles } from "@mui/styles";
 import { SdkContext } from "../sdk/SdkContext"; // Assuming you have an SDK context setup
 import Sdk from "@unique-nft/sdk";
+import Popup from '../components/Popup'; // Import the Popup component
+import axios from 'axios';
 
 const useStyles = makeStyles({
   uniquerace: {
@@ -120,33 +122,43 @@ const achievements = [
 const CarAchievements: React.FC = () => {
   const classes = useStyles(); // Use custom styles
   const { accounts } = useContext(AccountsContext);
-  const { sdk } = useContext(SdkContext); // Use SDK context
   const currentAccount = Array.from(accounts.values())[0];
 
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [selectedAchievement, setSelectedAchievement] = useState(
-    achievements[0]
-  );
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [selectedAchievement, setSelectedAchievement] = useState<any>(null);
 
-  // Function to handle image generation
   const handleGenerate = async (prompt: string) => {
     const url = await generateImage(prompt);
     setImageUrl(url);
   };
-  // Function to handle the burn action
-  const handleBurn = async (collectionId: number, tokenId: number) => {
+
+  const handleTradeForPowerup = (achievement: any) => {
+    setSelectedAchievement(achievement);
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupSubmit = async (collectionId: string, tokenId: string) => {
+    if (!selectedAchievement) return;
+
     try {
-      await sdk!.token.burn({
+      await axios.post('/api/update-nft', {
         collectionId,
         tokenId,
+        attributes: {
+          speed: 5,
+          control: 5,
+        },
       });
-      alert(
-        `Token ${tokenId} from collection ${collectionId} has been burned.`
-      );
+
+      alert(`NFT ${tokenId} in collection ${collectionId} attributes updated successfully.`);
     } catch (error) {
-      console.error("Error burning token:", error);
-      alert("Failed to burn token.");
+      console.error('Error updating NFT attributes:', error);
+      alert('Failed to update NFT attributes.');
     }
+
+    setIsPopupOpen(false);
+    setSelectedAchievement(null);
   };
 
   return (
@@ -158,19 +170,12 @@ const CarAchievements: React.FC = () => {
           <div className={classes.gridContainer}>
             {achievements.map((achievement, index) => (
               <div key={index} className={classes.achievementBox}>
-                <div className={classes.uniqueracemini}>
-                  Achievement {index + 1}
-                </div>
+                <div className={classes.uniqueracemini}>Achievement {index + 1}</div>
                 <p>Wins: {achievement.wins}</p>
                 <p>Defeats: {achievement.defeats}</p>
                 <p>Best Lap: {achievement.bestLap}</p>
                 <p>Total Play Time: {achievement.totalPlayTime}</p>
-                <button
-                  className={classes.button}
-                  onClick={() =>
-                    handleBurn(achievement.collectionId, achievement.tokenId)
-                  }
-                >
+                <button className={classes.button} onClick={() => handleTradeForPowerup(achievement)}>
                   Trade for Powerup
                 </button>
               </div>
@@ -187,6 +192,8 @@ const CarAchievements: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} onSubmit={handlePopupSubmit} />
     </div>
   );
 };

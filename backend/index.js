@@ -7,6 +7,7 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 const Collection = require('./models/Collection');
 const Car = require('./models/Car');
+const Achievement = require('./models/Achievement'); // Import Achievement model
 
 dotenv.config(); // Make sure this is at the top
 
@@ -23,8 +24,6 @@ mongoose.set('debug', true);
 
 console.log('Connecting to MongoDB with URI:', process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000,
 })
   .then(() => console.log('MongoDB connected'))
@@ -33,12 +32,63 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error('Check your MongoDB URI and ensure your IP address is whitelisted in MongoDB Atlas');
   });
 
+// Endpoint to update car attributes
+app.post('/api/update-nft', async (req, res) => {
+  console.log('Update NFT request received:', req.body);
+  const { collectionId, tokenId, attributes } = req.body;
+
+  try {
+    console.log('Connecting to SDK');
+    const { sdk } = await connectSdk();
+    console.log('SDK connected');
+
+    // Fetch current properties
+    const { properties } = await sdk.token.properties({ collectionId, tokenId });
+
+    let currentSpeed = 0;
+    let currentControl = 0;
+
+    // Parse current properties
+    if (properties?.length) {
+      properties.forEach((prop) => {
+        if (prop.key === 'Speed') currentSpeed = parseInt(prop.value, 10);
+        if (prop.key === 'Control') currentControl = parseInt(prop.value, 10);
+      });
+    }
+
+    // Calculate new attributes
+    const newSpeed = currentSpeed + (attributes.speed || 0);
+    const newControl = currentControl + (attributes.control || 0);
+
+    // Update NFT attributes on the blockchain
+    await sdk.token.setProperties({
+      collectionId,
+      tokenId,
+      properties: [
+        { key: 'Speed', value: newSpeed.toString() },
+        { key: 'Control', value: newControl.toString() },
+      ],
+    });
+
+    // Update in your database if necessary
+    const car = await Car.findOne({ carTokenId: tokenId, CarcollectionId: collectionId });
+    if (car) {
+      car.speed = newSpeed;
+      car.control = newControl;
+      await car.save();
+    }
+
+    res.status(200).send('NFT attributes updated successfully.');
+  } catch (error) {
+    console.error('Error updating NFT attributes:', error);
+    res.status(500).send('Failed to update NFT attributes.');
+  }
+});
 
 // Endpoint to create a new collection
 app.post('/api/create-collection', upload.single('image'), async (req, res) => {
   console.log('Create collection request received:', req.body);
   try {
-
     const { CarcollectionId } = req.body;
     console.log('Collection created, ID:', CarcollectionId);
 
@@ -97,17 +147,19 @@ app.post('/api/create-car', upload.single('image'), async (req, res) => {
     const carTokenId = parsed.tokenId;
     console.log('Car created, Token ID:', carTokenId);
 
-    console.log(req.body)
+    console.log(req.body);
 
     // Save car to the database
     const newCar = new Car({
       carTokenId,
-      CarcollectionId: new mongoose.Types.ObjectId(parseInt(CarcollectionId)), // Convert to ObjectId
+      CarcollectionId, // Store as string directly
       name,
       image: imageUrl,
       owner: walletAddress,
       victories: 0,
       defeats: 0,
+      speed: 0,
+      control: 0,
     });
 
     await newCar.save();
@@ -119,7 +171,6 @@ app.post('/api/create-car', upload.single('image'), async (req, res) => {
     res.status(500).json({ error: 'Failed to create car' });
   }
 });
-
 
 // Endpoint to create an achievement
 app.post('/api/create-achievement', upload.single('image'), async (req, res) => {
@@ -160,7 +211,7 @@ app.post('/api/create-achievement', upload.single('image'), async (req, res) => 
     // Save achievement to the database
     const newAchievement = new Achievement({
       achievementId,
-      AchievementcollectionId: new mongoose.Types.ObjectId(parseInt(AchievementcollectionId)), // Convert to ObjectId
+      AchievementcollectionId, // Store as string directly
       name,
       image: imageUrl,
       owner: walletAddress,
@@ -199,9 +250,42 @@ app.post('/api/get-achievement', async (req, res) => {
   }
 });
 
+// Endpoint to update car attributes
+app.post('/api/update-nft', async (req, res) => {
+  console.log('Update NFT request received:', req.body);
+  const { collectionId, nftId, attributes } = req.body;
 
+  try {
+    console.log('Connecting to SDK');
+    const { sdk } = await connectSdk();
+    console.log('SDK connected');
 
+    // Fetch current attributes
+    const { data: currentSpeed } = await sdk.nftAttributes(collectionId, nftId, 'Speed');
+    const { data: currentControl } = await sdk.nftAttributes(collectionId, nftId, 'Control');
 
+    // Calculate new attributes
+    const newSpeed = (currentSpeed.toNumber() || 0) + (attributes.speed || 0);
+    const newControl = (currentControl.toNumber() || 0) + (attributes.control || 0);
+
+    // Update NFT attributes on the blockchain
+    await sdk.setAttribute({ collectionId, nftId, key: 'Speed', value: newSpeed });
+    await sdk.setAttribute({ collectionId, nftId, key: 'Control', value: newControl });
+
+    // Update in your database if necessary
+    const car = await Car.findOne({ carTokenId: nftId });
+    if (car) {
+      car.speed = newSpeed;
+      car.control = newControl;
+      await car.save();
+    }
+
+    res.status(200).send('NFT attributes updated successfully.');
+  } catch (error) {
+    console.error('Error updating NFT attributes:', error);
+    res.status(500).send('Failed to update NFT attributes.');
+  }
+});
 
 // Endpoint to fetch user collections from the database
 app.post('/api/get-collections', async (req, res) => {
@@ -210,18 +294,18 @@ app.post('/api/get-collections', async (req, res) => {
 
   try {
     console.log('Finding collections in database');
-    console.log(walletAddress)
+    console.log(walletAddress);
     const collections = await Collection.find({ owner: walletAddress }).lean();
     console.log('Collections found:', collections);
 
     console.log('Fetching cars for each collection');
     const collectionsWithCars = await Promise.all(collections.map(async (collection) => {
       try {
-        const cars = await Car.find({ collectionId: mongoose.Types.ObjectId(collection.collectionId) }).lean();
-        console.log('Cars found for collection:', collection.collectionId, cars);
+        const cars = await Car.find({ collectionId: collection.CarcollectionId }).lean();
+        console.log('Cars found for collection:', collection.CarcollectionId, cars);
         return { ...collection, cars: cars || [] };
       } catch (carError) {
-        console.error(`Failed to fetch cars for collection ${collection.collectionId}:`, carError.message);
+        console.error(`Failed to fetch cars for collection ${collection.CarcollectionId}:`, carError.message);
         return { ...collection, cars: [] }; // Handle this case gracefully
       }
     }));
@@ -234,7 +318,6 @@ app.post('/api/get-collections', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch collections' });
   }
 });
-
 
 // Endpoint to fetch user achievements from the database
 app.post('/api/get-achievements', async (req, res) => {
@@ -253,11 +336,6 @@ app.post('/api/get-achievements', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch achievements' });
   }
 });
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
