@@ -198,6 +198,7 @@ button.close:hover::after {
 }
 
 .column {
+  margin-bottom: 100px;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -256,7 +257,7 @@ button.close:hover::after {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 300px;
+    margin-bottom: 400px;
     text-align: center;
     width: 300px; /* Added width */
     height: 300px; /* Adjusted height to make the box bigger */

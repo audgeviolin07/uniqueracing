@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CarTrade: React.FC = () => {
+const CarAchievements: React.FC = () => {
   const classes = useStyles(); // Use custom styles
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const currentAccount = Array.from(accounts.values())[0];
@@ -77,13 +77,12 @@ const CarTrade: React.FC = () => {
 
   return (
     <div className="page flex-vertical">
-      <div className="uniquerace">trade - collection 1</div>
+      <div className="uniquerace">trade - achievements to powerups</div>
       <div className="columns">
         <div className="column"></div>
         <div className="column center">
         <div className="white-box">
-            
-            <div className="uniqueracemini"> racecar 1 </div>
+            <div className="uniqueracemini"> achievement </div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>
@@ -91,16 +90,7 @@ const CarTrade: React.FC = () => {
             </div>
         
           <div className="white-box">
-          <div className="uniqueracemini">racecar 2</div>
-            <button className="nft-box">
-              <img src="racecar.png" alt="Top Image" className="top-image" />
-              
-            </button>
-            
-            <button>trade for powerup</button>
-          </div>
-          <div className="white-box">
-          <div className="uniqueracemini">racecar 3</div>
+          <div className="uniqueracemini"> achievement </div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
               
@@ -110,7 +100,7 @@ const CarTrade: React.FC = () => {
           </div>
           
           <div className="white-box">
-            <div className="uniqueracemini"> racecar 4 </div>
+            <div className="uniqueracemini"> achievement </div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>
@@ -118,7 +108,7 @@ const CarTrade: React.FC = () => {
             </div>
           
 
-        {/* <div className="white-box">
+        <div className="white-box">
         <PromptForm onGenerate={handleGenerate} />
 
     
@@ -128,11 +118,11 @@ const CarTrade: React.FC = () => {
             </div>
             </button>
             </div>
-           */}
+          
       </div>
       </div>
         </div>
   );
 };
 
-export default CarTrade;
+export default CarAchievements;

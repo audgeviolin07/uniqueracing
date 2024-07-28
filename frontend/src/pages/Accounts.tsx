@@ -11,11 +11,11 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"; // Corrected import
-import { makeStyles } from "@mui/styles"; // Import makeStyles
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { makeStyles } from "@mui/styles";
 import PromptForm from "../components/PromptForm";
 import ImageDisplay from "../components/ImageDisplay";
-import { generateImage } from "../openai"; // Corrected path
+import { generateImage } from "../openai";
 import { useCreateCollection } from "../utils/sdk-methods/create-collection";
 import { CreateCollectionParams } from "../utils/sdk-methods/types";
 import axios from "axios";
@@ -68,10 +68,21 @@ const useStyles = makeStyles({
     backgroundColor: "#ffffff",
     padding: "16px",
   },
+  topLeftImages: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    display: "flex",
+    gap: "10px",
+  },
+  image: {
+    width: "50px",
+    height: "50px",
+  },
 });
 
 export const AccountsPage = () => {
-  const classes = useStyles(); // Use custom styles
+  const classes = useStyles();
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const currentAccount = Array.from(accounts.values())[0];
 
@@ -103,7 +114,7 @@ export const AccountsPage = () => {
     setImageUrl(url);
   };
 
-  console.log(currentAccount)
+  console.log(currentAccount);
 
   return (
     <>
@@ -270,6 +281,98 @@ export const AccountsPage = () => {
                 }}
               >
                 TEST MAKE COLLECTION
+              </button>
+              <ImageDisplay imageUrl={imageUrl} />
+            </div>
+            <div className="play-button">
+              {currentAccount ? (
+                <Link to="/game">
+                  <button>play</button>
+                </Link>
+              ) : (
+                <button onClick={fetchPolkadotAccounts}>
+                  Connect Polkadot Wallet
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="column"></div>
+        </div>
+      </div>
+      <div className="page flex-vertical">
+        <div className={classes.topLeftImages}>
+          <img src="polka.png" alt="Polka Logo" className={classes.image} />
+          <img src="unique.png" alt="Unique Logo" className={classes.image} />
+          <img src="easya.png" alt="Unique Logo" className={classes.image} />
+        </div>
+        <div className="uniquerace">uniquerace</div>
+        <div className="columns">
+          <div className="column"></div>
+          <div className="column center">
+            <div className="white-box">
+              <div className="uniqueracemini">collections + achievements</div>
+              <Accordion className={classes.accordion}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  className={classes.accordionSummary}
+                >
+                  <button className={classes.nftBox}>🏎️ show collection</button>
+                </AccordionSummary>
+                <AccordionDetails className="uniqueracemini">
+                  <ul>
+                    <Link to="/trade">
+                      <li>Collection 1</li>
+                    </Link>
+                  </ul>
+                </AccordionDetails>
+              </Accordion>
+
+              <Link to="/achievements">
+                <button className={classes.nftBox}>🏆 show achievements</button>
+              </Link>
+            </div>
+
+            <img
+              src="uniqueracinglogo.png"
+              className="uniqueracinglogo"
+              alt="Unique Racing Logo"
+            />
+            <div className="white-box">
+              <div className="uniqueracemini">current racecar</div>
+              <button className="nft-box">
+                <img src="racecar.png" alt="Top Image" className="top-image" />
+              </button>
+
+              <button
+                onClick={async () => {
+                  const url = await generateImage("image of indie race car");
+                  console.log("Generated image");
+                  sdk?.collection
+                    .createV2({
+                      name: "Racing Dreams",
+                      description: "Racing simulation demo",
+                      symbol: "CAR",
+                      cover_image: { url: url },
+                      permissions: { nesting: { collectionAdmin: true } },
+                      encodeOptions: {
+                        overwriteTPPs: [
+                          {
+                            key: "tokenData",
+                            permission: {
+                              collectionAdmin: true,
+                              tokenOwner: false,
+                              mutable: true,
+                            },
+                          },
+                        ],
+                      },
+                    })
+                    .then((e) => console.log(e));
+                }}
+              >
+                make collection
               </button>
               <ImageDisplay imageUrl={imageUrl} />
             </div>

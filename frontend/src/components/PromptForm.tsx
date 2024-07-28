@@ -18,10 +18,10 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate }) => {
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Enter your prompt"
+        placeholder="enter your achievement"
         className="uniqueraceminimini"
       />
-      <button type="submit">generate nft for 0.8k</button>
+      <button type="submit">claim unique achievement</button>
     </form>
   );
 };
