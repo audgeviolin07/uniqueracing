@@ -21,7 +21,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate }) => {
         placeholder="enter your achievement"
         className="uniqueraceminimini"
       />
-      <button type="submit">claim unique achievement</button>
+      <button type="submit">claim unique achievement per 10 wins</button>
     </form>
   );
 };
