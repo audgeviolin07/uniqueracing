@@ -13,6 +13,8 @@
   background-color: white;
   left: 50%;
   transform: translateX(-50%);
+}
+.stripe-running{
   animation: moveStripes 1s linear infinite;
 }
 
