@@ -107,76 +107,76 @@ export const AccountsPage = () => {
   }, [currentAccount, axios]);
 
 //  #############################################################################################################################################################################################
-const handlePlay = async (carId) => {
-  try {
-    // Fetch the car details from the database
-    const car = await Car.findById(carId).lean();
-    if (!car) {
-      console.error('Car not found');
-      return;
-    }
+// const handlePlay = async (carId) => {
+//   try {
+//     // Fetch the car details from the database
+//     const car = await Car.findById(carId).lean();
+//     if (!car) {
+//       console.error('Car not found');
+//       return;
+//     }
 
-    // Simulate race outcome (for demonstration purposes)
-    const raceOutcome = Math.random(); // A random number between 0 and 1
-    const didWin = raceOutcome > 0.5; // Let's say the car wins if the outcome is greater than 0.5
+//     // Simulate race outcome (for demonstration purposes)
+//     const raceOutcome = Math.random(); // A random number between 0 and 1
+//     const didWin = raceOutcome > 0.5; // Let's say the car wins if the outcome is greater than 0.5
 
-    if (didWin) {
-      console.log(`Car ${car.name} won the race! Creating achievement...`);
+//     if (didWin) {
+//       console.log(`Car ${car.name} won the race! Creating achievement...`);
 
-      // Create the achievement
-      const { account, sdk } = await connectSdk();
-      const imageUrl = 'URL_TO_ACHIEVEMENT_IMAGE'; // Replace with the actual image URL or upload logic
+//       // Create the achievement
+//       const { account, sdk } = await connectSdk();
+//       const imageUrl = 'URL_TO_ACHIEVEMENT_IMAGE'; // Replace with the actual image URL or upload logic
 
-      const { parsed } = await sdk.token.createV2({
-        AchievementcollectionId: 'ACHIEVEMENT_COLLECTION_ID', // Replace with the actual achievement collection ID
-        image: imageUrl,
-        owner: car.owner,
-        attributes: [
-          { trait_type: 'CarId', value:car   },
-          { trait_type: 'TotalTime', value: 0 },
-          { trait_type: 'Score', value: 0 },
-          { trait_type: 'Position', value: 0 },
-        ],
-      });
+//       const { parsed } = await sdk.token.createV2({
+//         AchievementcollectionId: 'ACHIEVEMENT_COLLECTION_ID', // Replace with the actual achievement collection ID
+//         image: imageUrl,
+//         owner: car.owner,
+//         attributes: [
+//           { trait_type: 'CarId', value:car   },
+//           { trait_type: 'TotalTime', value: 0 },
+//           { trait_type: 'Score', value: 0 },
+//           { trait_type: 'Position', value: 0 },
+//         ],
+//       });
 
-      if (!parsed) {
-        console.error('Failed to parse achievement creation response');
-        return;
-      }
+//       if (!parsed) {
+//         console.error('Failed to parse achievement creation response');
+//         return;
+//       }
 
-      const achievementId = parsed.tokenId;
-      console.log('Achievement created, Token ID:', achievementId);
+//       const achievementId = parsed.tokenId;
+//       console.log('Achievement created, Token ID:', achievementId);
 
-      // Save the achievement to the database
-      // const newAchievement = new Achievement({
-      //   achievementId,
-      //   AchievementcollectionId: new mongoose.Types.ObjectId('ACHIEVEMENT_COLLECTION_ID'), // Replace with the actual achievement collection ID
-      //   name: `Achievement for ${car.name}`,
-      //   image: imageUrl,
-      //   owner: car.owner,
-      //   victories: 1,
-      //   defeats: 0,
-      // });
+//       // Save the achievement to the database
+//       // const newAchievement = new Achievement({
+//       //   achievementId,
+//       //   AchievementcollectionId: new mongoose.Types.ObjectId('ACHIEVEMENT_COLLECTION_ID'), // Replace with the actual achievement collection ID
+//       //   name: `Achievement for ${car.name}`,
+//       //   image: imageUrl,
+//       //   owner: car.owner,
+//       //   victories: 1,
+//       //   defeats: 0,
+//       // });
 
-      // await newAchievement.save();
-      // console.log('Achievement saved to database:', newAchievement);
+//       // await newAchievement.save();
+//       // console.log('Achievement saved to database:', newAchievement);
 
-      // Update the car's victories
-      car.victories += 1;
-      await Car.findByIdAndUpdate(carId, { victories: car.victories });
-      console.log(`Car ${car.name} victories updated to ${car.victories}`);
-    } else {
-      console.log(`Car ${car.name} lost the race.`);
-      // Update the car's defeats
-      car.defeats += 1;
-      await Car.findByIdAndUpdate(carId, { defeats: car.defeats });
-      console.log(`Car ${car.name} defeats updated to ${car.defeats}`);
-    }
-  } catch (error) {
-    console.error('Error handling play:', error.message);
-    console.error(error.stack);
-  }
-};
+//       // Update the car's victories
+//       car.victories += 1;
+//       await Car.findByIdAndUpdate(carId, { victories: car.victories });
+//       console.log(`Car ${car.name} victories updated to ${car.victories}`);
+//     } else {
+//       console.log(`Car ${car.name} lost the race.`);
+//       // Update the car's defeats
+//       car.defeats += 1;
+//       await Car.findByIdAndUpdate(carId, { defeats: car.defeats });
+//       console.log(`Car ${car.name} defeats updated to ${car.defeats}`);
+//     }
+//   } catch (error) {
+//     console.error('Error handling play:', error.message);
+//     console.error(error.stack);
+//   }
+// };
 
 
 // #############################################################################################################################################################################################
