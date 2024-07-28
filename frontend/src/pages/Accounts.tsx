@@ -81,12 +81,12 @@ export const AccountsPage = () => {
 
   return (
     <div className="page flex-vertical">
-      <div className="uniquerace">uniquerace</div>
+      <div className="uniquerace"> uniquerace</div>
       <div className="columns">
         <div className="column"></div>
         <div className="column center">
           <div className="white-box">
-            <div className="uniqueracemini">collections + achievements</div>
+            <div className="uniqueracemini">collections & achievements</div>
             <Accordion className={classes.accordion}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -112,7 +112,7 @@ export const AccountsPage = () => {
 
           <img src="uniqueracinglogo.png" className="uniqueracinglogo" alt="Unique Racing Logo" />
           <div className="white-box">
-            <div className="uniqueracemini">current racecar</div>
+            <div className="uniqueracemini">🏎️ current racecar</div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>
@@ -142,7 +142,7 @@ export const AccountsPage = () => {
                 }).then((e) => console.log(e));
               }}
             >
-              make collection
+              + make collection
             </button>
             <ImageDisplay imageUrl={imageUrl} />
           </div>
