@@ -8,7 +8,7 @@ export const useCreateCollection = () => {
   const { sdk } = useContext(SdkContext);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [collectionId, setCollectionId] = useState<string | null>(null);
+  const [collectionId, setCollectionId] = useState<number | null>(null);
 
   const createCollection = async ({
     name,

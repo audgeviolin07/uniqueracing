@@ -16,6 +16,8 @@ import { makeStyles } from '@mui/styles'; // Import makeStyles
 import PromptForm from '../components/PromptForm';
 import ImageDisplay from '../components/ImageDisplay';
 import { generateImage } from '../openai'; // Corrected path
+import { useCreateCollection } from "../utils/sdk-methods/create-collection";
+import { CreateCollectionParams } from "../utils/sdk-methods/types";
 
 const useStyles = makeStyles({
   nftBox: {
@@ -63,11 +65,45 @@ const useStyles = makeStyles({
 });
 
 export const AccountsPage = () => {
+
+
+
   const classes = useStyles(); // Use custom styles
   const { accounts, fetchPolkadotAccounts } = useContext(AccountsContext);
   const currentAccount = Array.from(accounts.values())[0];
 
   const [imageUrl, setImageUrl] = useState<string>('');
+
+
+
+  // ############################################Create Collections ####################################################################################################################################
+  const { createCollection, loading, error, collectionId } = useCreateCollection();
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [symbol, setSymbol] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!file) {
+      alert("Please select a file");
+      return;
+    }
+
+    const params: CreateCollectionParams = {
+      name,
+      description,
+      symbol,
+      file,
+    };
+
+    const result = await createCollection(params);
+    if (result.error) {
+      alert(result.error);
+    }
+  };
+
+  // ####################################################################################################################################
 
   const handleGenerate = async (prompt: string) => {
     const url = await generateImage(prompt);
@@ -101,7 +137,47 @@ export const AccountsPage = () => {
                   </ul>
                 </AccordionDetails>
               </Accordion>
-              <button className={classes.nftBox}>Create Collection</button>
+              {/* <button onClick={} className={classes.nftBox}>Create Collection</button> */}
+              <div>
+      <h1>Create Collection</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Symbol"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+          required
+        />
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) {
+              setFile(e.target.files[0]);
+            }
+          }}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Collection"}
+        </button>
+      </form>
+      {error && <p>Error: {error}</p>}
+      {collectionId && <p>Collection created with ID: {collectionId}</p>}
+    </div>
             </div>
             {/* <Logo /> */}
             <img src="uniqueracinglogo.png" className="uniqueracinglogo" />
