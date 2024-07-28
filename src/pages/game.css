@@ -2,6 +2,10 @@
   width: 100vw;
   height: 100vh;
 }
+.button-start{
+  position: fixed;
+  z-index: 10;
+}
 
 .status {
   display: flex;
@@ -20,29 +24,38 @@
 .road-container {
     position: relative;
     width: 100%;
-    height: 98vh; /* Adjust height as needed */
+    height: 100vh; /* Adjust height as needed */
     overflow: hidden;
     display: flex;
     justify-content: center; /* Center the road horizontally */
     align-items: center;
+    z-index: 5;
   }
   
   .road {
     position: fixed;
-    width: 100%; /* Road width at the bottom */
-    height: 100vh;
+    width: 95%; /* Road width at the bottom */
+    height: 62vh;
     bottom: 0vh;
     background-color: #333; /* Dark road color */
-    clip-path: polygon(48% 30%, 52% 30%, 100% 100%, 0% 100%); /* Triangular shape */
+    clip-path: polygon(49% 30%, 51% 30%, 100% 100%, 0% 100%); /* Triangular shape */
     overflow: hidden;
+  }
+  @keyframes moveBackground {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 60px;
+    }
   }
   
   .road-border {
     position: fixed;
     width: 100vw;
-    height: 100vh;
+    height: 61vh;
     bottom: 0vh;
-    clip-path: polygon(48% 30%, 49% 31%, 5% 100%, 0% 100%);
+    clip-path: polygon(49% 29%, 48% 31%, 5% 100%, 0% 100%);
     background: repeating-linear-gradient(
       to bottom,
       white,
@@ -51,22 +64,27 @@
       blue 60px
     );
   }
+  .border-animate{
+    animation: moveBackground 1s linear infinite;
+  }
   .left-border {
     left: 0%;
   }
   
   .right-border {
     right: 0%;
-    clip-path: polygon(51% 31%, 52% 30%, 100% 100%, 95% 100%);
+    clip-path: polygon(50% 29%, 51% 29%, 100% 100%, 95% 100%);
   }
   .road-strip {
     position: absolute;
     width: 2vw;
-    height: 10%;
+    height: 20%;
     background-color: #FFF;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+  }
+  .strip-animate{
     animation: moveStrip 1s linear infinite;
   }
   
@@ -86,6 +104,75 @@
     height: 5%;
     background-color: red;
     top: 15%;
+    z-index: 4;
+  }
+
+
+  .gif-try{
+    z-index: 2;
+    width: 100vw;
+    height: 98vh;
+  }
+
+
+
+
+  .car{
+    z-index: 100;
+    position: fixed;
+    height: 25vh;
+    bottom: 3vh;
+    left: 30vw;
+    justify-content: flex-end;
+  }
+  .front-section {
+    position: relative;
+    width: 100%;
+    top: -10%;
   }
   
+  .front-section .wheel.left {
+    margin-left: 0.5vw;
+  }
+  
+  .front-section .wheel.right {
+    margin-right: 0.5vw;
+  }
 
+  .wheel {
+    position: relative;
+    background: black;
+    z-index: 110;
+    border-radius: 33%; /* Adjusted to your specific style */
+    clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
+  }
+  .wheel.rear{
+    width: 4vw;
+    height: 6vh;
+  }
+  .wheel.front{
+    width: 3vw;
+    height: 4vh;
+    z-index: 101;
+  }
+.car-back{
+  width: 10vw;
+  height: 10vh;
+  z-index: 106;
+  background: blue;
+  clip-path: polygon(0 45%, 5% 46%, 7% 5%, 93% 5%, 95% 46%, 100% 45%, 100% 65%, 98% 68%, 95% 95%, 5% 95%, 2% 68%, 0 65%);
+  border-radius: 40%;
+}
+.chasis{
+  position: absolute;
+  background: red;
+  z-index: 102;
+  width: 15vw;
+  height: 18vh;
+  clip-path: polygon(48% -5%, 52% -5%, 0% 70%, 100% 70%);
+}
+.chasis.inner{
+  background: rgb(190, 115, 115);
+  z-index: 103;
+  clip-path: polygon(50% 0%, 50% 0%, 23% 60%, 77% 60%);
+}

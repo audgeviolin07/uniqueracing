@@ -1,4 +1,4 @@
-.car {
+/* .car {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -6,7 +6,7 @@
   height: 60px;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  transition: top 2s ease-in-out; /* Transition for winner car */
+  transition: top 2s ease-in-out; 
   box-shadow: 0 0 20px rgba(111, 189, 243, 0.7); 
 }
 
@@ -86,4 +86,4 @@
 
 .right-wheel.back {
   right: -7px;
-}
+} */

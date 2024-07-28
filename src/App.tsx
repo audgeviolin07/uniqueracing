@@ -16,7 +16,7 @@ function App() {
           <AccountsContextProvider>
             <Routes>
               <Route path='/' element={<AccountsPage />} />
-              <Route path='/game' element={<CarGame />} />
+              <Route path='/game' element={<Game />} />
               <Route path='/cargame' element={<CarGame />} />
             </Routes>
           </AccountsContextProvider>
