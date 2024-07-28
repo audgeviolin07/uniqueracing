@@ -8,13 +8,26 @@
 }
 
 .status {
+  position: fixed;
+  top: 0vh;
   display: flex;
+  z-index: 100;
   justify-content: space-between;
   width: 100vw;
   height: 2vh;
   padding: 10px;
   background-color: #333;
   color: #FFF;
+}
+.message{
+  position: fixed;
+  top: 10vh;
+  width: 30vw;
+  height: 20vh;
+  background: #ffffffa1;
+  z-index: 500;
+  border-radius: 10%;
+  color: black;
 }
 
 .status div {

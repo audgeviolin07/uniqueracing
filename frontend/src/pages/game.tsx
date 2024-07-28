@@ -77,18 +77,30 @@ const Status: React.FC<StatusProps> = ({ leftData, rightData, time }) => {
   return (
     <div className="status">
       <div className='flex-horizontal'>
-        <span>Score: {leftData.score}</span>
-        <span>Speed: {leftData.speed.toFixed(2)} km/h</span>
+        <span>Score: {leftData.score.toFixed(4)}</span><br />
+        <span>Speed: {leftData.speed.toFixed(2)} km/h</span><br />
         <span>Distance: {leftData.distance.toFixed(2)} km</span>
       </div>
       <div className='flex-horizontal'>
-        <span>Time: {time}s</span>
+        <span>Time: {time.toFixed(4)}s</span>
       </div>
       <div className='flex-horizontal'>
-        <span>Score: {rightData.score}</span>
-        <span>Speed: {rightData.speed.toFixed(2)} km/h</span>
+        <span>Score: {rightData.score.toFixed(4)}</span><br />
+        <span>Speed: {rightData.speed.toFixed(2)} km/h</span><br />
         <span>Distance: {rightData.distance.toFixed(2)} km</span>
       </div>
+    </div>
+  );
+};
+
+interface MessageProps {
+  message: string;
+}
+
+const ShowMessage: React.FC<MessageProps> = ({ message }) => {
+  return (
+    <div className='message flex-vertical'>
+      {message}
     </div>
   );
 };
@@ -101,6 +113,7 @@ export const Game: React.FC = () => {
   const [rightCar, setRightCar] = useState<carData>({ score: 0, speed: 0, bestLap: 0, rank: 0, distance: 0, acceleration: 0 });
   const [time, setTime] = useState<number>(0);
   const [gameState, setGameState] = useState<'null' | 'active' | 'finished'>('null');
+  const [winner, setWinner] = useState<string | null>(null);
 
   useEffect(() => {
     if (gameState === 'active') {
@@ -110,25 +123,39 @@ export const Game: React.FC = () => {
           const newSpeed = prevLeftCar.speed + prevLeftCar.acceleration * 0.2;
           const newDistance = prevLeftCar.distance + (newSpeed + prevLeftCar.speed) / 36000;
           const newScore = 0.1 * newDistance;
-          return { ...prevLeftCar, score:newScore, speed: newSpeed, distance: newDistance };
+          return { ...prevLeftCar, score: newScore, speed: newSpeed, distance: newDistance };
         });
         setRightCar(prevRightCar => {
           const newSpeed = prevRightCar.speed + prevRightCar.acceleration * 0.2;
           const newDistance = prevRightCar.distance + (newSpeed + prevRightCar.speed) / 36000;
           const newScore = 0.1 * newDistance;
-          return { ...prevRightCar, score:newScore, speed: newSpeed, distance: newDistance };
+          return { ...prevRightCar, score: newScore, speed: newSpeed, distance: newDistance };
         });
-        // alert('Something happened');
+        if (Number.isInteger(time)){
+          setLeftCar(prev => { return { ...prev, acceleration: prev.acceleration + (Math.random()-0.5)*0.8 } });
+          setRightCar(prev => { return { ...prev, acceleration: prev.acceleration + (Math.random()-0.5)*0.8 } });
+        }
+
+        if (Math.max(leftCar.distance, rightCar.distance) >= 0.02) {
+          setGameState('finished');
+          if (leftCar.distance > rightCar.distance) {
+            setWinner("Player1 Won the Game");
+          } else if (leftCar.distance < rightCar.distance) {
+            setWinner("Player2 Won the Game");
+          } else {
+            setWinner("Game Draw");
+          }
+        }
       }, 200);
 
       return () => clearInterval(interval);
     }
-  }, [gameState]);
+  }, [gameState, leftCar.distance, rightCar.distance]);
 
   const handleStartClick = () => {
     setGameState('active');
-    setLeftCar(prev => { return {...prev, acceleration:acc_left}});
-    setRightCar(prev => { return {...prev, acceleration:acc_right}});
+    setLeftCar(prev => { return { ...prev, acceleration: acc_left } });
+    setRightCar(prev => { return { ...prev, acceleration: acc_right } });
   };
 
   return (
@@ -139,6 +166,7 @@ export const Game: React.FC = () => {
       <Car position='right'></Car>
       {gameState === 'null' && <button className='button-start' onClick={handleStartClick}>Start</button>}
       <img className='gif-try' src={gameState === 'active' ? backActive : backStart} alt="" />
+      {winner && <ShowMessage message={winner} />}
     </div>
   );
 };
