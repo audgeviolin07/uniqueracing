@@ -7,6 +7,12 @@
   pointer-events: none;
 }
 
+.uniqueracinglogo {
+  display: block;
+  margin-top: 20px; /* Adjust this value to move the image further down */
+  margin-bottom: 250px; /* Optional: add space below the image */
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -85,7 +91,7 @@ button {
   text-align: center; /* Center the text */
   position: relative;
   top: 50px;
-  margin: 20px 0;
+  margin: 15px 0;
   text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
                0 0 20px rgba(111, 189, 243, 0.6), 
                0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
@@ -228,7 +234,7 @@ button.close:hover::after {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 400px;
     text-align: center;
     width: 300px; /* Added width */
     height: 300px; /* Adjusted height to make the box bigger */
@@ -247,7 +253,7 @@ button.close:hover::after {
     width: 300px;
     height: 300px;
     top: 50px;
-    margin: 20px 0;
+    margin: 30px 0;
     text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
                  0 0 20px rgba(111, 189, 243, 0.6), 
                  0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
