@@ -62,6 +62,19 @@ app.post('/api/create-collection', upload.single('image'), async (req, res) => {
   }
 });
 
+// Returns the unique collection id
+app.post("/api/get-car-collection", async (req, res) => {
+  try {
+    const { walletAddress } = req.body;
+    const collections = await Collection.find({ owner: walletAddress, name: "Racing Dreams" }).lean();
+    res.json({ id: collections[0] });
+
+  } catch (error) {
+    console.error('Error creating car:', error);
+    res.status(500).json({ error: 'Failed to create car' });
+  }
+})
+
 // Endpoint to create a car
 app.post('/api/create-car', upload.single('image'), async (req, res) => {
   console.log('Create car request received:', req.body);

@@ -14,6 +14,8 @@ import Road from "../components/Road";
 import Car from "../components/Car";
 import { useCreateCollection } from "../utils/sdk-methods/create-collection";
 import { CreateCollectionParams } from "../utils/sdk-methods/types";
+import { SdkContext } from "../sdk/SdkContext";
+import axios from "axios";
 
 const useStyles = makeStyles({
   nftBox: {
@@ -71,6 +73,9 @@ const CarTrade: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [winner, setWinner] = useState<string | null>(null);
 
+  const [carName, setCarName] = useState<string>("");
+  const { sdk } = useContext(SdkContext);
+
   // Function to handle image generation
   const handleGenerate = async (prompt: string) => {
     const url = await generateImage(prompt);
@@ -90,14 +95,36 @@ const CarTrade: React.FC = () => {
         <div className="white-box" style={{ marginBottom: "18rem" }}>
           <input
             type="text"
-            style={{}}
+            onChange={(e) => setCarName(e.target.value)}
             placeholder="enter your car name"
             className="uniqueraceminimini"
           />
           <button className="nft-box">
             <img src="unique.png" alt="Top Image" className="top-image" />
           </button>
-          <button>create car</button>
+          <button
+            onClick={async () => {
+              const collectionId = await axios.post(
+                "http://localhost:3001/api/get-car-collection",
+                { walletAddress: currentAccount.address }
+              );
+              const result = await sdk?.token.createV2({
+                collectionId: collectionId.data.id.collectionId,
+                owner: currentAccount.address,
+                image: "https://gateway.pinata.cloud/ipfs/QmeNzaLfsUUi5pGmhrASEpXF52deCDuByeKbU7SuZ9toEi",
+                attributes: [
+                  { trait_type: 'name', value: carName },
+                  { trait_type: 'wins', value: 0 },
+                  { trait_type: 'losses', value: 0 },
+                  { trait_type: 'speed', value: 50 },
+                ],
+              })
+              console.log(result)
+              setCarName("");
+            }}
+          >
+            create a new car
+          </button>
         </div>
         <div className="white-box" style={{ marginBottom: "18rem" }}>
           <div className="uniqueracemini"> racecar 1 </div>
