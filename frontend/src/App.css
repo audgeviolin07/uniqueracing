@@ -237,16 +237,30 @@ button.close:hover::after {
                  0 0 20px rgba(111, 189, 243, 0.6), 
                  0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
   }
+  .uniqueraceminimini {
+    font-size: 20px; /* Large font size */
+    font-weight: bold; /* Bold text */
+    background: linear-gradient(45deg, #ffffff, #4ea0d3, #2e8cb3); /* Blue gradient */
+    -webkit-background-clip: text; /* For Safari and Chrome */
+    -webkit-text-fill-color: transparent; /* For Safari and Chrome */
+    background-clip: text; /* Standard syntax */
+    color: transparent; /* Standard syntax */
+    text-align: center; /* Center the text */
+    text-shadow: 0 0 10px rgba(111, 189, 243, 0.8), 
+                 0 0 20px rgba(111, 189, 243, 0.6), 
+                 0 0 30px rgba(111, 189, 243, 0.4); /* Glowing effect */
+  }
 
   .white-box {
     background-color: rgba(255, 255, 255, 0);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 400px;
+    margin-bottom: 300px;
     text-align: center;
     width: 300px; /* Added width */
     height: 300px; /* Adjusted height to make the box bigger */
+    margin: 90px;
   }
 
   .nft-box {

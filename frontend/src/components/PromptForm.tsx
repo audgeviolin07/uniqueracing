@@ -19,8 +19,9 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate }) => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder="Enter your prompt"
+        className="uniqueraceminimini"
       />
-      <button type="submit">Generate Image</button>
+      <button type="submit">generate nft for 0.8k</button>
     </form>
   );
 };

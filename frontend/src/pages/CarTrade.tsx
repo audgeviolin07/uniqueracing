@@ -81,8 +81,14 @@ const CarTrade: React.FC = () => {
       <div className="columns">
         <div className="column"></div>
         <div className="column center">
+        <div className="white-box">
+            <div className="uniqueracemini"> racecar 1 </div>
+            <button className="nft-box">
+              <img src="racecar.png" alt="Top Image" className="top-image" />
+            </button>
+            </div>
           <div className="white-box">
-          <div className="uniqueracemini">racecar 1</div>
+          <div className="uniqueracemini">racecar 2</div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>
@@ -91,7 +97,7 @@ const CarTrade: React.FC = () => {
           </div>
           
           <div className="white-box">
-            <div className="uniqueracemini"> racecar 2 </div>
+            <div className="uniqueracemini"> racecar 3 </div>
             <button className="nft-box">
               <img src="racecar.png" alt="Top Image" className="top-image" />
             </button>

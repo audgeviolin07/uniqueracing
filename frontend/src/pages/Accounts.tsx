@@ -119,6 +119,7 @@ export const AccountsPage = () => {
         <div className="columns">
           <div className="column"></div>
           <div className="column center">
+            
             <div className="white-box">
               <div className="uniqueracemini">collections</div>
               <Accordion className={classes.accordion}>
@@ -188,7 +189,7 @@ export const AccountsPage = () => {
               <button className="nft-box">
                 <img src="racecar.png" alt="Top Image" className="top-image" />
               </button>
-              <PromptForm onGenerate={handleGenerate} />
+             
               <button
                 onClick={async () => {
                   generateImage("image of indie race car").then((url) => {
