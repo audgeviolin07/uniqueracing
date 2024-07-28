@@ -7,6 +7,15 @@
   pointer-events: none;
 }
 
+
+.image-display img {
+  width: 220px;
+  height: 220px;
+  border-radius: 10px; /* Make the edges rounded */
+  margin-top: 10px;
+}
+
+
 .uniqueracinglogo {
   display: block;
   margin-top: 20px; /* Adjust this value to move the image further down */

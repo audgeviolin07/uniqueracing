@@ -131,9 +131,10 @@ export const AccountsPage = () => {
                 </AccordionSummary>
                 <AccordionDetails className={classes.nftBox}>
                   <ul>
+                    
+                    <Link to="/trade">
                     <li>Collection 1</li>
-                    <li>Collection 2</li>
-                    <li>Collection 3</li>
+                </Link>
                   </ul>
                 </AccordionDetails>
               </Accordion>
