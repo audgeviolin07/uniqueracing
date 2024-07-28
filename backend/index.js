@@ -38,44 +38,8 @@ mongoose.connect(process.env.MONGO_URI, {
 app.post('/api/create-collection', upload.single('image'), async (req, res) => {
   console.log('Create collection request received:', req.body);
   try {
-    console.log('Uploading image to Pinata:', req.file.path);
-    const imageUrl = await uploadToPinata(req.file.path);
-    console.log('Image uploaded to Pinata:', imageUrl);
 
-    console.log('Connecting to SDK');
-    const { account, sdk } = await connectSdk();
-    console.log('SDK connected, account:', account);
-
-    console.log('Creating collection with SDK');
-    const {parsed} = await sdk.collection.createV2({
-      name: "Racing Dreams",
-      description: "Racing simulation demo",
-      symbol: "CAR",
-      cover_image: {url: "https://gateway.pinata.cloud/ipfs/QmeNzaLfsUUi5pGmhrASEpXF52deCDuByeKbU7SuZ9toEi"},
-      // NOTICE: activate nesting for collection admin in order to assign achievements
-      permissions: {nesting: {collectionAdmin: true}},
-      encodeOptions: {
-        overwriteTPPs: [
-          {
-            // tokenData is a container for attributes
-            key: 'tokenData',
-            permission: {
-              // NOTICE: limit mutability for admins only 
-              collectionAdmin: true, tokenOwner: false, mutable: true
-            }
-          }
-        ],
-      },
-    });
-
-    console.log(req.body)
-
-    if (!parsed) {
-      console.error('Failed to parse collection creation response');
-      return res.status(500).json({ error: 'Cannot create collection' });
-    }
-
-    const collectionId = parsed.collectionId;
+    const { collectionId } = req.body;
     console.log('Collection created, ID:', collectionId);
 
     // Save collection to the database
@@ -84,8 +48,8 @@ app.post('/api/create-collection', upload.single('image'), async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       symbol: req.body.symbol,
-      coverImage: imageUrl,
-      owner: account.address, // Assuming 'account' has the user's address
+      coverImage: req.body.url,
+      owner: req.body.owner, // Assuming 'account' has the user's address
     });
 
     await newCollection.save();
