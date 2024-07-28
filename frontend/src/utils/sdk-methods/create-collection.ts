@@ -48,7 +48,7 @@ export const useCreateCollection = () => {
       }
 
       setCollectionId(parsed.collectionId);
-      return { collectionId: parsed.collectionId };
+      return { collectionId: parsed.collectionId.toString() };
     } catch (error: any) {
       setError(error.message);
       return { error: error.message };

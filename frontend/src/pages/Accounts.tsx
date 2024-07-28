@@ -77,31 +77,31 @@ export const AccountsPage = () => {
 
 
   // ############################################Create Collections ####################################################################################################################################
-  const { createCollection, loading, error, collectionId } = useCreateCollection();
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [symbol, setSymbol] = useState<string>("");
-  const [file, setFile] = useState<File | null>(null);
+  // const { createCollection, loading, error, collectionId } = useCreateCollection();
+  // const [name, setName] = useState<string>("");
+  // const [description, setDescription] = useState<string>("");
+  // const [symbol, setSymbol] = useState<string>("");
+  // const [file, setFile] = useState<File | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!file) {
-      alert("Please select a file");
-      return;
-    }
+  // const handleSubmit = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (!file) {
+  //     alert("Please select a file");
+  //     return;
+  //   }
 
-    const params: CreateCollectionParams = {
-      name,
-      description,
-      symbol,
-      file,
-    };
+  //   const params: CreateCollectionParams = {
+  //     name,
+  //     description,
+  //     symbol,
+  //     file,
+  //   };
 
-    const result = await createCollection(params);
-    if (result.error) {
-      alert(result.error);
-    }
-  };
+  //   const result = await createCollection(params);
+  //   if (result.error) {
+  //     alert(result.error);
+  //   }
+  // };
 
   // ####################################################################################################################################
 
@@ -139,8 +139,8 @@ export const AccountsPage = () => {
               </Accordion>
               {/* <button onClick={} className={classes.nftBox}>Create Collection</button> */}
               <div>
-      <h1>Create Collection</h1>
-      <form onSubmit={handleSubmit}>
+      {/* <h1>Create Collection</h1> */}
+      {/* <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -176,7 +176,7 @@ export const AccountsPage = () => {
         </button>
       </form>
       {error && <p>Error: {error}</p>}
-      {collectionId && <p>Collection created with ID: {collectionId}</p>}
+      {collectionId && <p>Collection created with ID: {collectionId}</p>} */}
     </div>
             </div>
             {/* <Logo /> */}
@@ -189,7 +189,6 @@ export const AccountsPage = () => {
               <PromptForm onGenerate={handleGenerate} />
             <ImageDisplay imageUrl={imageUrl} />
             </div>
-         
             <div className="play-button">
               {currentAccount ? (
                 <Link to="/game">
