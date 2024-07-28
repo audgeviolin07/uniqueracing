@@ -117,6 +117,7 @@ const CarTrade: React.FC = () => {
                   { trait_type: 'wins', value: 0 },
                   { trait_type: 'losses', value: 0 },
                   { trait_type: 'speed', value: 50 },
+                  
                 ],
               })
               console.log(result)
