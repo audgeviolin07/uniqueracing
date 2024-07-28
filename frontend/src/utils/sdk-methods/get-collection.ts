@@ -1,32 +1,77 @@
-import { Sdk } from "@unique-nft/sdk/full";
+import React, { useState } from "react";
+import { useCreateCollection } from "./create-collection";
+import { CreateCollectionParams, CreateCollectionResult } from "./types";
 
-export default function getCollection(sdk: Sdk | undefined) {
-  // const { walletAddress } = req.body;
-  // console.log('Fetching collections for wallet address:', walletAddress);
 
-  // try {
-  //   console.log('Finding collections in database');
-  //   console.log(walletAddress)
-  //   const collections = await Collection.find({ owner: walletAddress }).lean();
-  //   console.log('Collections found:', collections);
+const CreateCollectionComponent: React.FC = () => {
+  const { createCollection, loading, error, collectionId } = useCreateCollection();
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [symbol, setSymbol] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
 
-  //   console.log('Fetching cars for each collection');
-  //   const collectionsWithCars = await Promise.all(collections.map(async (collection) => {
-  //     try {
-  //       const cars = await Car.find({ collectionId: mongoose.Types.ObjectId(collection.collectionId) }).lean();
-  //       console.log('Cars found for collection:', collection.collectionId, cars);
-  //       return { ...collection, cars: cars || [] };
-  //     } catch (carError) {
-  //       console.error(`Failed to fetch cars for collection ${collection.collectionId}:`, carError.message);
-  //       return { ...collection, cars: [] }; // Handle this case gracefully
-  //     }
-  //   }));
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!file) {
+      alert("Please select a file");
+      return;
+    }
 
-  //   console.log('Fetched collections with cars from DB:', collectionsWithCars);
-  //   res.json({ collections: collectionsWithCars });
-  // } catch (error) {
-  //   console.error('Failed to fetch collections:', error.message);
-  //   console.error(error.stack);
-  //   res.status(500).json({ error: 'Failed to fetch collections' });
-  // }
-}
+    const params: CreateCollectionParams = {
+      name,
+      description,
+      symbol,
+      file,
+    };
+
+    const result = await createCollection(params);
+    if (result.error) {
+      alert(result.error);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Create Collection</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Symbol"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+          required
+        />
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) {
+              setFile(e.target.files[0]);
+            }
+          }}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Collection"}
+        </button>
+      </form>
+      {error && <p>Error: {error}</p>}
+      {collectionId && <p>Collection created with ID: {collectionId}</p>}
+    </div>
+  );
+};
+
+export default CreateCollectionComponent;

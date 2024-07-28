@@ -11,7 +11,7 @@ const getConfig = () => {
 
 const config = getConfig();
 
-const connectSdk = async () => {
+export const connectSdk = async () => {
   const account = Sr25519Account.fromUri(config.mnemonic);
 
   const sdk = new Sdk({
