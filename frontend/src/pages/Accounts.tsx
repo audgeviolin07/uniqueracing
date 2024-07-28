@@ -125,25 +125,35 @@ export const AccountsPage = () => {
           <div className="column"></div>
           <div className="column center">
             <div className="white-box">
-              <div className="uniqueracemini">your collections</div>
+              <div className="uniqueracemini">collections + achievements</div>
               {hasCollection ? (
-                <Accordion className={classes.accordion}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    className={classes.accordionSummary}
-                  >
-                    <button className={classes.nftBox}>Show Collection</button>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.nftBox}>
-                    <ul>
-                      <Link to="/trade">
-                        <li>Collection 1</li>
-                      </Link>
-                    </ul>
-                  </AccordionDetails>
-                </Accordion>
+                <>
+                  <Accordion className={classes.accordion}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      className={classes.accordionSummary}
+                    >
+                      <button className={classes.nftBox}>
+                        🏎️ show collection
+                      </button>
+                    </AccordionSummary>
+                    <AccordionDetails className="uniqueracemini">
+                      <ul>
+                        <Link to="/trade">
+                          <li>Collection 1</li>
+                        </Link>
+                      </ul>
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Link to="/achievements">
+                    <button className={classes.nftBox}>
+                      🏆 show achievements
+                    </button>
+                  </Link>
+                </>
               ) : (
                 <h1>
                   You seem to have no collections. Why not{" "}
@@ -199,49 +209,8 @@ export const AccountsPage = () => {
                   </button>
                 </h1>
               )}
-              {/* <button onClick={} className={classes.nftBox}>Create Collection</button> */}
-              <div>
-                {/* <h1>Create Collection</h1> */}
-                {/* <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Symbol"
-          value={symbol}
-          onChange={(e) => setSymbol(e.target.value)}
-          required
-        />
-        <input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files) {
-              setFile(e.target.files[0]);
-            }
-          }}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Collection"}
-        </button>
-      </form>
-      {error && <p>Error: {error}</p>}
-      {collectionId && <p>Collection created with ID: {collectionId}</p>} */}
-              </div>
+              <div></div>
             </div>
-            {/* <Logo /> */}
             <img src="uniqueracinglogo.png" className="uniqueracinglogo" />
             <div className="white-box">
               <div className="uniqueracemini">my nft racecar</div>
@@ -281,98 +250,6 @@ export const AccountsPage = () => {
                 }}
               >
                 TEST MAKE COLLECTION
-              </button>
-              <ImageDisplay imageUrl={imageUrl} />
-            </div>
-            <div className="play-button">
-              {currentAccount ? (
-                <Link to="/game">
-                  <button>play</button>
-                </Link>
-              ) : (
-                <button onClick={fetchPolkadotAccounts}>
-                  Connect Polkadot Wallet
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="column"></div>
-        </div>
-      </div>
-      <div className="page flex-vertical">
-        <div className={classes.topLeftImages}>
-          <img src="polka.png" alt="Polka Logo" className={classes.image} />
-          <img src="unique.png" alt="Unique Logo" className={classes.image} />
-          <img src="easya.png" alt="Unique Logo" className={classes.image} />
-        </div>
-        <div className="uniquerace">uniquerace</div>
-        <div className="columns">
-          <div className="column"></div>
-          <div className="column center">
-            <div className="white-box">
-              <div className="uniqueracemini">collections + achievements</div>
-              <Accordion className={classes.accordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  className={classes.accordionSummary}
-                >
-                  <button className={classes.nftBox}>🏎️ show collection</button>
-                </AccordionSummary>
-                <AccordionDetails className="uniqueracemini">
-                  <ul>
-                    <Link to="/trade">
-                      <li>Collection 1</li>
-                    </Link>
-                  </ul>
-                </AccordionDetails>
-              </Accordion>
-
-              <Link to="/achievements">
-                <button className={classes.nftBox}>🏆 show achievements</button>
-              </Link>
-            </div>
-
-            <img
-              src="uniqueracinglogo.png"
-              className="uniqueracinglogo"
-              alt="Unique Racing Logo"
-            />
-            <div className="white-box">
-              <div className="uniqueracemini">current racecar</div>
-              <button className="nft-box">
-                <img src="racecar.png" alt="Top Image" className="top-image" />
-              </button>
-
-              <button
-                onClick={async () => {
-                  const url = await generateImage("image of indie race car");
-                  console.log("Generated image");
-                  sdk?.collection
-                    .createV2({
-                      name: "Racing Dreams",
-                      description: "Racing simulation demo",
-                      symbol: "CAR",
-                      cover_image: { url: url },
-                      permissions: { nesting: { collectionAdmin: true } },
-                      encodeOptions: {
-                        overwriteTPPs: [
-                          {
-                            key: "tokenData",
-                            permission: {
-                              collectionAdmin: true,
-                              tokenOwner: false,
-                              mutable: true,
-                            },
-                          },
-                        ],
-                      },
-                    })
-                    .then((e) => console.log(e));
-                }}
-              >
-                make collection
               </button>
               <ImageDisplay imageUrl={imageUrl} />
             </div>
