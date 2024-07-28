@@ -5,6 +5,7 @@ import CarGame from './pages/CarGame';
 import { SdkProvider } from './sdk/SdkContext';
 import { SignByLocalSignerModalProvider } from './signModal/SignByLocalSignerModalContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Game from './pages/game';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <AccountsContextProvider>
             <Routes>
               <Route path='/' element={<AccountsPage />} />
-              <Route path='/game' element={<AccountsPage />} />
+              <Route path='/game' element={<Game />} />
               <Route path='/cargame' element={<CarGame />} />
             </Routes>
           </AccountsContextProvider>
