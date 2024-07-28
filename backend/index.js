@@ -7,6 +7,7 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 const Collection = require('./models/Collection');
 const Car = require('./models/Car');
+const Achievement =  require('./models/Achivements')
 
 dotenv.config(); // Make sure this is at the top
 
