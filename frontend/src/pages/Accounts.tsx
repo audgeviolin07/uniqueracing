@@ -142,7 +142,7 @@ export const AccountsPage = () => {
                     <AccordionDetails className="uniqueracemini">
                       <ul>
                         <Link to="/trade">
-                          <li>Collection 1</li>
+                          <li>Cars</li>
                         </Link>
                       </ul>
                     </AccordionDetails>
@@ -212,47 +212,24 @@ export const AccountsPage = () => {
               <div></div>
             </div>
             <img src="uniqueracinglogo.png" className="uniqueracinglogo" />
-            <div className="white-box">
-              <div className="uniqueracemini">my nft racecar</div>
-              <button className="nft-box">
-                <img src="racecar.png" alt="Top Image" className="top-image" />
-              </button>
+            {currentAccount ? (
+              <>
+                <div className="white-box">
+                  <div className="uniqueracemini">my nft racecar</div>
+                  <button className="nft-box">
+                    <img
+                      src="racecar.png"
+                      alt="Top Image"
+                      className="top-image"
+                    />
+                  </button>
+                  <ImageDisplay imageUrl={imageUrl} />
+                </div>
+              </>
+            ) : (
+              <div className="white-box" />
+            )}
 
-              <button
-                onClick={async () => {
-                  generateImage("image of indie race car").then((url) => {
-                    console.log("Generated image");
-                    sdk?.collection
-                      .createV2({
-                        name: "Racing Dreams",
-                        description: "Racing simulation demo",
-                        symbol: "CAR",
-                        cover_image: { url: url },
-                        // NOTICE: activate nesting for collection admin in order to assign achievements
-                        permissions: { nesting: { collectionAdmin: true } },
-                        encodeOptions: {
-                          overwriteTPPs: [
-                            {
-                              // tokenData is a container for attributes
-                              key: "tokenData",
-                              permission: {
-                                // NOTICE: limit mutability for admins only
-                                collectionAdmin: true,
-                                tokenOwner: false,
-                                mutable: true,
-                              },
-                            },
-                          ],
-                        },
-                      })
-                      .then((e) => console.log(e));
-                  });
-                }}
-              >
-                TEST MAKE COLLECTION
-              </button>
-              <ImageDisplay imageUrl={imageUrl} />
-            </div>
             <div className="play-button">
               {currentAccount ? (
                 <Link to="/game">
