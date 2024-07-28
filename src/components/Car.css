@@ -7,6 +7,7 @@
     transform: translate(-50%, -50%);
     z-index: 1000;
     transition: top 2s ease-in-out; /* Transition for winner car */
+    box-shadow: 0 0 20px rgba(111, 189, 243, 0.7); 
   }
   
   .dash {
