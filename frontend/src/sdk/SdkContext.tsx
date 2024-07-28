@@ -1,28 +1,39 @@
-import { createContext, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ChainPropertiesResponse } from "@unique-nft/sdk";
-import { Sdk, CHAIN_CONFIG} from '@unique-nft/sdk/full';
-const { Sr25519Account } = require('@unique-nft/sr25519');
+import { Sdk, CHAIN_CONFIG } from "@unique-nft/sdk/full";
+import { Sr25519Account } from "@unique-nft/sr25519";
 
 export type SdkContextValueType = {
-  sdk: Sdk | undefined
-  chainProperties: ChainPropertiesResponse | undefined
-}
+  sdk: Sdk | undefined;
+  chainProperties: ChainPropertiesResponse | undefined;
+};
 
 export const SdkContext = createContext<SdkContextValueType>({
   sdk: undefined,
-  chainProperties: undefined
+  chainProperties: undefined,
 });
 
 const baseUrl = CHAIN_CONFIG.opal.restUrl;
 
 export const SdkProvider = ({ children }: PropsWithChildren) => {
   const [sdk, setSdk] = useState<Sdk>();
-  const [chainProperties, setChainProperties] = useState<ChainPropertiesResponse>();
+  const [chainProperties, setChainProperties] =
+    useState<ChainPropertiesResponse>();
 
   useEffect(() => {
+    const account = Sr25519Account.fromUri(
+     process.env.REACT_APP_MNEMONIC as string
+    );
 
     const sdk = new Sdk({
       baseUrl,
+      account,
     });
     setSdk(sdk);
 
@@ -30,9 +41,13 @@ export const SdkProvider = ({ children }: PropsWithChildren) => {
       const chainProperties = await sdk?.common.chainProperties();
       setChainProperties(chainProperties);
     })();
-  }, []);   
+  }, []);
 
-  return <SdkContext.Provider value={useMemo(() => ({ sdk, chainProperties }), [sdk, chainProperties])}>
+  return (
+    <SdkContext.Provider
+      value={useMemo(() => ({ sdk, chainProperties }), [sdk, chainProperties])}
+    >
       {children}
-    </SdkContext.Provider>;
+    </SdkContext.Provider>
+  );
 };
